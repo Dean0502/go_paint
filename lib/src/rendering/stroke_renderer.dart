@@ -42,7 +42,8 @@ class BasicInkRenderer implements StrokeRenderer {
         ..color = stroke.color
         ..style = PaintingStyle.fill
         ..isAntiAlias = true;
-      canvas.drawCircle(points.first.position, stroke.baseWidth * 0.5, fillPaint);
+      canvas.drawCircle(
+          points.first.position, stroke.baseWidth * 0.5, fillPaint);
       return;
     }
 

@@ -34,7 +34,8 @@ class StrokeBoundaryGenerator {
     double miterLimit = 4.0,
     int arcSteps = 8,
   }) {
-    assert(points.length == radii.length, 'Points and radii lengths must match');
+    assert(
+        points.length == radii.length, 'Points and radii lengths must match');
 
     if (points.isEmpty) {
       return const BoundarySequence(

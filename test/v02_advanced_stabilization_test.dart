@@ -4,7 +4,8 @@ import 'package:go_paint/go_paint.dart';
 
 void main() {
   group('v0.2: NoiseFilter Tests', () {
-    test('Rejects displacement below threshold and accepts above threshold', () {
+    test('Rejects displacement below threshold and accepts above threshold',
+        () {
       final filter = NoiseFilter(minDistance: 2.0);
       const origin = Offset(100, 100);
 
@@ -28,19 +29,25 @@ void main() {
     test('Resilient to irregular event intervals and pause gaps', () {
       final kinematics = KinematicsTracker(maxVelocity: 2000.0);
 
-      const s0 = PointerSample(position: Offset(0, 0), timestamp: Duration.zero);
-      const s1 = PointerSample(position: Offset(10, 0), timestamp: Duration(milliseconds: 10)); // 1000 px/s
+      const s0 =
+          PointerSample(position: Offset(0, 0), timestamp: Duration.zero);
+      const s1 = PointerSample(
+          position: Offset(10, 0),
+          timestamp: Duration(milliseconds: 10)); // 1000 px/s
       kinematics.update(s1, s0);
       expect(kinematics.smoothedVelocity, greaterThan(500.0));
       expect(kinematics.lastDirection.dx, closeTo(1.0, 0.01));
 
       // Irregular interval (25ms)
-      const s2 = PointerSample(position: Offset(25, 0), timestamp: Duration(milliseconds: 35)); // 600 px/s
+      const s2 = PointerSample(
+          position: Offset(25, 0),
+          timestamp: Duration(milliseconds: 35)); // 600 px/s
       kinematics.update(s2, s1);
       expect(kinematics.smoothedVelocity, inInclusiveRange(600.0, 1000.0));
 
       // Pause gap (> 150ms) should not produce erratic spikes
-      const sPause = PointerSample(position: Offset(50, 0), timestamp: Duration(milliseconds: 300));
+      const sPause = PointerSample(
+          position: Offset(50, 0), timestamp: Duration(milliseconds: 300));
       kinematics.update(sPause, s2);
       expect(kinematics.smoothedVelocity.isFinite, isTrue);
     });
@@ -69,12 +76,16 @@ void main() {
       final slowP = sim.resolve(sample, velocity: 50.0, maxVelocity: 2000.0);
       final fastP = sim.resolve(sample, velocity: 1800.0, maxVelocity: 2000.0);
 
-      expect(slowP, greaterThan(0.85), reason: 'Slow moves deposit higher pressure');
-      expect(fastP, lessThan(0.45), reason: 'Fast moves deposit lower pressure');
+      expect(slowP, greaterThan(0.85),
+          reason: 'Slow moves deposit higher pressure');
+      expect(fastP, lessThan(0.45),
+          reason: 'Fast moves deposit lower pressure');
       expect(slowP, greaterThan(fastP));
     });
 
-    test('AdaptivePressureSource delegates to hardware for stylus and simulated for touch', () {
+    test(
+        'AdaptivePressureSource delegates to hardware for stylus and simulated for touch',
+        () {
       const adaptive = AdaptivePressureSource();
 
       const stylusSample = PointerSample(
@@ -91,7 +102,8 @@ void main() {
         pressure: 1.0,
         deviceType: PointerDeviceKind.touch,
       );
-      final touchP = adaptive.resolve(touchSample, velocity: 1500.0, maxVelocity: 2000.0);
+      final touchP =
+          adaptive.resolve(touchSample, velocity: 1500.0, maxVelocity: 2000.0);
       expect(touchP, lessThan(1.0), reason: 'Touch uses velocity simulation');
     });
   });
@@ -117,8 +129,11 @@ void main() {
   });
 
   group('v0.2: CornerPreserver Tests', () {
-    test('Detects acute direction turns (> 65 deg) and returns reduced smoothing factor', () {
-      const config = StabilizerConfig(cornerAngleDeg: 65.0, cornerSmoothingFactor: 0.12);
+    test(
+        'Detects acute direction turns (> 65 deg) and returns reduced smoothing factor',
+        () {
+      const config =
+          StabilizerConfig(cornerAngleDeg: 65.0, cornerSmoothingFactor: 0.12);
       final preserver = CornerPreserver(config: config);
 
       // Moving right along X-axis
@@ -152,7 +167,8 @@ void main() {
       expect(tip, isNull);
     });
 
-    test('When enabled, forward extrapolates capped at maxPredictionDistance', () {
+    test('When enabled, forward extrapolates capped at maxPredictionDistance',
+        () {
       const config = StabilizerConfig(
         predictionEnabled: true,
         predictionHorizonMs: 16.0,
@@ -178,7 +194,9 @@ void main() {
   });
 
   group('v0.2: MultiTouch State Machine & Policy Tests', () {
-    test('Second finger triggers multitouch state and completes stroke safely under default policy', () {
+    test(
+        'Second finger triggers multitouch state and completes stroke safely under default policy',
+        () {
       final pointerInput = PointerInput(
         multiTouchPolicy: MultiTouchPolicy.completeCurrentStroke,
       );
@@ -225,7 +243,9 @@ void main() {
       expect(rejectedMove, isNull);
     });
 
-    test('Predicted tip is transient: visible during active draw, absent on stroke completion', () {
+    test(
+        'Predicted tip is transient: visible during active draw, absent on stroke completion',
+        () {
       final stabilizer = Stabilizer(
         config: const StabilizerConfig(
           predictionEnabled: true,

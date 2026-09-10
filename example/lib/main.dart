@@ -62,10 +62,12 @@ class PlatformBenchmarkMetadata {
       if (!kIsWeb && Platform.isAndroid) {
         final androidInfo = await deviceInfo.androidInfo;
         platformName = 'android';
-        androidVer = '${androidInfo.version.release} (SDK ${androidInfo.version.sdkInt})';
+        androidVer =
+            '${androidInfo.version.release} (SDK ${androidInfo.version.sdkInt})';
         final manufacturer = androidInfo.manufacturer;
         final model = androidInfo.model;
-        deviceDesc = (manufacturer.isNotEmpty && !model.toLowerCase().startsWith(manufacturer.toLowerCase()))
+        deviceDesc = (manufacturer.isNotEmpty &&
+                !model.toLowerCase().startsWith(manufacturer.toLowerCase()))
             ? '$manufacturer $model'
             : model;
         if (androidInfo.supportedAbis.isNotEmpty) {
@@ -85,7 +87,9 @@ class PlatformBenchmarkMetadata {
       }
     } catch (_) {
       platformName = defaultTargetPlatform.name.toLowerCase();
-      deviceDesc = kIsWeb ? 'Web' : '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
+      deviceDesc = kIsWeb
+          ? 'Web'
+          : '${Platform.operatingSystem} ${Platform.operatingSystemVersion}';
     }
 
     return PlatformBenchmarkMetadata(
@@ -152,14 +156,22 @@ class _KidzCanvasBenchmarkAppState extends State<KidzCanvasBenchmarkApp> {
 }
 
 enum BenchmarkMode {
-  slowHandwriting('Slow handwriting', 'slow_handwriting', 'Cursive letterforms & loops', Icons.edit),
-  fastScribble('Fast scribble', 'fast_scribble', 'Rapid side-to-side sweeping', Icons.bolt),
-  circle('Circle', 'circle', 'Continuous curvature & symmetry', Icons.circle_outlined),
-  sharpCorners('Sharp corners', 'sharp_corners', 'Apexes, M/N/Z turns & stars', Icons.change_history),
-  zigzag('Zig-zag', 'zigzag', 'High-frequency triangular wave', Icons.show_chart),
-  longLine('Long straight line', 'long_straight_line', 'Drift & steady-state stability', Icons.linear_scale),
-  tinyDetail('Tiny detail', 'tiny_detail', 'Sub-millimeter stipples & accents', Icons.grain),
-  rapidDirection('Rapid direction changes', 'rapid_direction_changes', '180° hairpin reversals', Icons.alt_route);
+  slowHandwriting('Slow handwriting', 'slow_handwriting',
+      'Cursive letterforms & loops', Icons.edit),
+  fastScribble('Fast scribble', 'fast_scribble', 'Rapid side-to-side sweeping',
+      Icons.bolt),
+  circle('Circle', 'circle', 'Continuous curvature & symmetry',
+      Icons.circle_outlined),
+  sharpCorners('Sharp corners', 'sharp_corners', 'Apexes, M/N/Z turns & stars',
+      Icons.change_history),
+  zigzag(
+      'Zig-zag', 'zigzag', 'High-frequency triangular wave', Icons.show_chart),
+  longLine('Long straight line', 'long_straight_line',
+      'Drift & steady-state stability', Icons.linear_scale),
+  tinyDetail('Tiny detail', 'tiny_detail', 'Sub-millimeter stipples & accents',
+      Icons.grain),
+  rapidDirection('Rapid direction changes', 'rapid_direction_changes',
+      '180° hairpin reversals', Icons.alt_route);
 
   final String title;
   final String testId;
@@ -196,7 +208,6 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
   bool _pencilPaperTooth = true;
   double _pencilLeadGrade = 0.3; // 0.1, 0.3, 0.5
   bool _showPencilHUD = true;
-
 
   // Crayon state
   bool _crayonEdgeVariation = true;
@@ -248,7 +259,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
         multiTouchPolicy: MultiTouchPolicy.completeCurrentStroke,
       ),
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) => _initPlatformMetadata());
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _initPlatformMetadata());
   }
 
   void _updateBrushRenderer() {
@@ -274,7 +286,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
         }
         _controller.activeWidth = baseW;
         if (_controller.activeColor == const Color(0xFFE11D48)) {
-          _controller.activeColor = const Color(0xFF262626); // Graphite charcoal
+          _controller.activeColor =
+              const Color(0xFF262626); // Graphite charcoal
         }
         _controller.strokeRenderer = PencilRenderer(
           PencilConfig(
@@ -350,7 +363,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('kidz_canvas v0.3 Benchmark', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text('kidz_canvas v0.3 Benchmark',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Text(
               '${_platformMeta.device} • ${_platformMeta.platform.toUpperCase()}',
               style: const TextStyle(fontSize: 11, color: Colors.black54),
@@ -361,7 +375,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
           IconButton(
             icon: Icon(_showInstructions ? Icons.info : Icons.info_outline),
             tooltip: 'Benchmark Protocol Instructions',
-            onPressed: () => setState(() => _showInstructions = !_showInstructions),
+            onPressed: () =>
+                setState(() => _showInstructions = !_showInstructions),
           ),
           IconButton(
             icon: const Icon(Icons.tune),
@@ -380,17 +395,21 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                 IconButton(
                   icon: const Icon(Icons.undo),
                   tooltip: 'Undo',
-                  onPressed: _controller.canUndo ? () => _controller.undo() : null,
+                  onPressed:
+                      _controller.canUndo ? () => _controller.undo() : null,
                 ),
                 IconButton(
                   icon: const Icon(Icons.redo),
                   tooltip: 'Redo',
-                  onPressed: _controller.canRedo ? () => _controller.redo() : null,
+                  onPressed:
+                      _controller.canRedo ? () => _controller.redo() : null,
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete_outline),
                   tooltip: 'Clear',
-                  onPressed: _controller.strokes.isNotEmpty ? () => _controller.clear() : null,
+                  onPressed: _controller.strokes.isNotEmpty
+                      ? () => _controller.clear()
+                      : null,
                 ),
               ],
             ),
@@ -487,10 +506,12 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
             child: SafeArea(
               child: Card(
                 elevation: 4,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16)),
                 color: Colors.white.withValues(alpha: 0.96),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -499,15 +520,19 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
-                            const Text('Brush: ', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                            const Text('Brush: ',
+                                style: TextStyle(
+                                    fontSize: 11, fontWeight: FontWeight.bold)),
                             ...ActiveBrush.values.map((brush) {
                               final isSel = _activeBrush == brush;
                               return Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 2),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 2),
                                 child: ChoiceChip(
                                   selected: isSel,
                                   avatar: Icon(brush.icon, size: 14),
-                                  label: Text(brush.label, style: const TextStyle(fontSize: 10.5)),
+                                  label: Text(brush.label,
+                                      style: const TextStyle(fontSize: 10.5)),
                                   onSelected: (val) {
                                     if (val) {
                                       setState(() {
@@ -522,17 +547,27 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                             if (_activeBrush == ActiveBrush.crayon) ...[
                               const SizedBox(width: 6),
                               IconButton(
-                                icon: Icon(_showCrayonHUD ? Icons.analytics : Icons.analytics_outlined, size: 18),
+                                icon: Icon(
+                                    _showCrayonHUD
+                                        ? Icons.analytics
+                                        : Icons.analytics_outlined,
+                                    size: 18),
                                 tooltip: 'Toggle Crayon Debug HUD',
-                                onPressed: () => setState(() => _showCrayonHUD = !_showCrayonHUD),
+                                onPressed: () => setState(
+                                    () => _showCrayonHUD = !_showCrayonHUD),
                               ),
                             ],
                             if (_activeBrush == ActiveBrush.pencil) ...[
                               const SizedBox(width: 6),
                               IconButton(
-                                icon: Icon(_showPencilHUD ? Icons.analytics : Icons.analytics_outlined, size: 18),
+                                icon: Icon(
+                                    _showPencilHUD
+                                        ? Icons.analytics
+                                        : Icons.analytics_outlined,
+                                    size: 18),
                                 tooltip: 'Toggle Pencil Debug HUD',
-                                onPressed: () => setState(() => _showPencilHUD = !_showPencilHUD),
+                                onPressed: () => setState(
+                                    () => _showPencilHUD = !_showPencilHUD),
                               ),
                             ],
                           ],
@@ -547,11 +582,13 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                           children: BenchmarkMode.values.map((mode) {
                             final isSelected = _activeMode == mode;
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 3),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 3),
                               child: FilterChip(
                                 selected: isSelected,
                                 avatar: Icon(mode.icon, size: 15),
-                                label: Text(mode.title, style: const TextStyle(fontSize: 11.5)),
+                                label: Text(mode.title,
+                                    style: const TextStyle(fontSize: 11.5)),
                                 onSelected: (val) {
                                   if (val) {
                                     setState(() => _activeMode = mode);
@@ -568,11 +605,16 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _buildMiniToggle('Raw', _showRawPoints, (v) => setState(() => _showRawPoints = v)),
-                          _buildMiniToggle('Smooth', _showStabilizedPoints, (v) => setState(() => _showStabilizedPoints = v)),
-                          _buildMiniToggle('Catmull', _showCatmullPoints, (v) => setState(() => _showCatmullPoints = v)),
-                          _buildMiniToggle('Predict', _showPredictedTip, (v) => setState(() => _showPredictedTip = v)),
-                          _buildMiniToggle('Guide', _showTemplateGuide, (v) => setState(() => _showTemplateGuide = v)),
+                          _buildMiniToggle('Raw', _showRawPoints,
+                              (v) => setState(() => _showRawPoints = v)),
+                          _buildMiniToggle('Smooth', _showStabilizedPoints,
+                              (v) => setState(() => _showStabilizedPoints = v)),
+                          _buildMiniToggle('Catmull', _showCatmullPoints,
+                              (v) => setState(() => _showCatmullPoints = v)),
+                          _buildMiniToggle('Predict', _showPredictedTip,
+                              (v) => setState(() => _showPredictedTip = v)),
+                          _buildMiniToggle('Guide', _showTemplateGuide,
+                              (v) => setState(() => _showTemplateGuide = v)),
                         ],
                       ),
                     ],
@@ -586,7 +628,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
     );
   }
 
-  Widget _buildMiniToggle(String label, bool value, ValueChanged<bool> onChanged) {
+  Widget _buildMiniToggle(
+      String label, bool value, ValueChanged<bool> onChanged) {
     return InkWell(
       onTap: () => onChanged(!value),
       borderRadius: BorderRadius.circular(8),
@@ -595,9 +638,13 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(value ? Icons.check_box : Icons.check_box_outline_blank, size: 14, color: value ? Colors.blue : Colors.grey),
+            Icon(value ? Icons.check_box : Icons.check_box_outline_blank,
+                size: 14, color: value ? Colors.blue : Colors.grey),
             const SizedBox(width: 3),
-            Text(label, style: TextStyle(fontSize: 11, color: value ? Colors.black87 : Colors.grey.shade600)),
+            Text(label,
+                style: TextStyle(
+                    fontSize: 11,
+                    color: value ? Colors.black87 : Colors.grey.shade600)),
           ],
         ),
       ),
@@ -631,7 +678,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                     Flexible(
                       child: Text(
                         'Android Protocol',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 11, fontWeight: FontWeight.bold),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -645,10 +693,14 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
             ],
           ),
           const SizedBox(height: 6),
-          const Text('• Use one finger.', style: TextStyle(fontSize: 10, color: Colors.black87)),
-          const Text('• Draw naturally.', style: TextStyle(fontSize: 10, color: Colors.black87)),
-          const Text('• Do not compensate for smoothing.', style: TextStyle(fontSize: 10, color: Colors.black87)),
-          const Text('• Repeat each test 3–5 times.', style: TextStyle(fontSize: 10, color: Colors.black87)),
+          const Text('• Use one finger.',
+              style: TextStyle(fontSize: 10, color: Colors.black87)),
+          const Text('• Draw naturally.',
+              style: TextStyle(fontSize: 10, color: Colors.black87)),
+          const Text('• Do not compensate for smoothing.',
+              style: TextStyle(fontSize: 10, color: Colors.black87)),
+          const Text('• Repeat each test 3–5 times.',
+              style: TextStyle(fontSize: 10, color: Colors.black87)),
           const SizedBox(height: 4),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
@@ -656,7 +708,11 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(4),
             ),
-            child: const Text('Prediction: OFF (Baseline)', style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: Colors.black54)),
+            child: const Text('Prediction: OFF (Baseline)',
+                style: TextStyle(
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black54)),
           ),
         ],
       ),
@@ -665,8 +721,10 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
 
   /// Floating HUD displaying real-time Crayon 120 Hz incremental pipeline telemetry.
   Widget _buildCrayonHUD() {
-    final stroke = _controller.activeStroke ?? (_controller.strokes.isNotEmpty ? _controller.strokes.last : null);
-    final lastPt = stroke?.points.isNotEmpty == true ? stroke!.points.last : null;
+    final stroke = _controller.activeStroke ??
+        (_controller.strokes.isNotEmpty ? _controller.strokes.last : null);
+    final lastPt =
+        stroke?.points.isNotEmpty == true ? stroke!.points.last : null;
 
     final curVel = lastPt?.velocity ?? 0.0;
     final curPress = lastPt?.pressure ?? 0.0;
@@ -694,10 +752,15 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E1B4B).withValues(alpha: 0.94), // Deep wax indigo
+        color:
+            const Color(0xFF1E1B4B).withValues(alpha: 0.94), // Deep wax indigo
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFF43F5E).withValues(alpha: 0.6)), // Crayon rose
-        boxShadow: const [BoxShadow(color: Colors.black38, blurRadius: 6, offset: Offset(0, 2))],
+        border: Border.all(
+            color:
+                const Color(0xFFF43F5E).withValues(alpha: 0.6)), // Crayon rose
+        boxShadow: const [
+          BoxShadow(color: Colors.black38, blurRadius: 6, offset: Offset(0, 2))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -708,7 +771,11 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
             children: [
               const Icon(Icons.color_lens, color: Color(0xFFFB7185), size: 13),
               const SizedBox(width: 5),
-              const Text('CRAYON HUD (v0.5.2)', style: TextStyle(color: Color(0xFFFB7185), fontSize: 11, fontWeight: FontWeight.bold)),
+              const Text('CRAYON HUD (v0.5.2)',
+                  style: TextStyle(
+                      color: Color(0xFFFB7185),
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold)),
               const SizedBox(width: 8),
               InkWell(
                 onTap: () => setState(() {
@@ -716,15 +783,24 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                   _updateBrushRenderer();
                 }),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _crayonEdgeVariation ? Colors.green.withValues(alpha: 0.25) : Colors.red.withValues(alpha: 0.25),
+                    color: _crayonEdgeVariation
+                        ? Colors.green.withValues(alpha: 0.25)
+                        : Colors.red.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: _crayonEdgeVariation ? Colors.green : Colors.red, width: 0.8),
+                    border: Border.all(
+                        color: _crayonEdgeVariation ? Colors.green : Colors.red,
+                        width: 0.8),
                   ),
                   child: Text(
                     _crayonEdgeVariation ? 'Tooth: ON' : 'Tooth: OFF',
-                    style: TextStyle(color: _crayonEdgeVariation ? Colors.greenAccent : Colors.redAccent, fontSize: 9.5),
+                    style: TextStyle(
+                        color: _crayonEdgeVariation
+                            ? Colors.greenAccent
+                            : Colors.redAccent,
+                        fontSize: 9.5),
                   ),
                 ),
               ),
@@ -735,32 +811,81 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                   _updateBrushRenderer();
                 }),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _crayonEdgeFringe ? Colors.cyan.withValues(alpha: 0.25) : Colors.grey.withValues(alpha: 0.25),
+                    color: _crayonEdgeFringe
+                        ? Colors.cyan.withValues(alpha: 0.25)
+                        : Colors.grey.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: _crayonEdgeFringe ? Colors.cyan : Colors.grey, width: 0.8),
+                    border: Border.all(
+                        color: _crayonEdgeFringe ? Colors.cyan : Colors.grey,
+                        width: 0.8),
                   ),
                   child: Text(
                     _crayonEdgeFringe ? 'Fringe: ON' : 'Fringe: OFF',
-                    style: TextStyle(color: _crayonEdgeFringe ? Colors.cyanAccent : Colors.white70, fontSize: 9.5),
+                    style: TextStyle(
+                        color: _crayonEdgeFringe
+                            ? Colors.cyanAccent
+                            : Colors.white70,
+                        fontSize: 9.5),
                   ),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 5),
-          Text('Width:   ${curWidth.toStringAsFixed(2)} px | Vel: ${curVel.toStringAsFixed(0)} px/s', style: const TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'monospace')),
-          Text('Press:   ${curPress.toStringAsFixed(2)} | Pigment: ${(curOpacity * 100).toStringAsFixed(0)}%', style: const TextStyle(color: Color(0xFFFDE047), fontSize: 10, fontFamily: 'monospace')),
+          Text(
+              'Width:   ${curWidth.toStringAsFixed(2)} px | Vel: ${curVel.toStringAsFixed(0)} px/s',
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 10, fontFamily: 'monospace')),
+          Text(
+              'Press:   ${curPress.toStringAsFixed(2)} | Pigment: ${(curOpacity * 100).toStringAsFixed(0)}%',
+              style: const TextStyle(
+                  color: Color(0xFFFDE047),
+                  fontSize: 10,
+                  fontFamily: 'monospace')),
           const Divider(height: 6, thickness: 0.5, color: Colors.white24),
-          Text('Width Update:    ${telem.widthTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Geom Increm:     ${telem.geometryTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Tooth Perturb:   ${telem.contourTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Draw Submission: ${telem.drawSubmissionTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Active Total:    ${telem.totalTimeMs.toStringAsFixed(2)} ms', style: TextStyle(color: totalColor, fontSize: 10.5, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          Text('Width Update:    ${telem.widthTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Geom Increm:     ${telem.geometryTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Tooth Perturb:   ${telem.contourTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text(
+              'Draw Submission: ${telem.drawSubmissionTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Active Total:    ${telem.totalTimeMs.toStringAsFixed(2)} ms',
+              style: TextStyle(
+                  color: totalColor,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'monospace')),
           const Divider(height: 6, thickness: 0.5, color: Colors.white24),
-          Text('p50: ${telem.p50TotalMs.toStringAsFixed(2)} ms | p95: ${telem.p95TotalMs.toStringAsFixed(2)} ms | max: ${telem.maxTotalMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.cyanAccent, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Points: ${telem.pointCount} | Contour Verts: ${telem.contourVertexCount}', style: const TextStyle(color: Colors.white60, fontSize: 9.5, fontFamily: 'monospace')),
+          Text(
+              'p50: ${telem.p50TotalMs.toStringAsFixed(2)} ms | p95: ${telem.p95TotalMs.toStringAsFixed(2)} ms | max: ${telem.maxTotalMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.cyanAccent,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text(
+              'Points: ${telem.pointCount} | Contour Verts: ${telem.contourVertexCount}',
+              style: const TextStyle(
+                  color: Colors.white60,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
         ],
       ),
     );
@@ -768,8 +893,10 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
 
   /// Floating HUD displaying real-time Pencil brush dynamics and diagnostics.
   Widget _buildPencilHUD() {
-    final stroke = _controller.activeStroke ?? (_controller.strokes.isNotEmpty ? _controller.strokes.last : null);
-    final lastPt = stroke?.points.isNotEmpty == true ? stroke!.points.last : null;
+    final stroke = _controller.activeStroke ??
+        (_controller.strokes.isNotEmpty ? _controller.strokes.last : null);
+    final lastPt =
+        stroke?.points.isNotEmpty == true ? stroke!.points.last : null;
 
     double curWidth = 0.0;
     double curVel = lastPt?.velocity ?? 0.0;
@@ -796,8 +923,11 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF0F172A).withValues(alpha: 0.90),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFF38BDF8).withValues(alpha: 0.5)),
-        boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))],
+        border:
+            Border.all(color: const Color(0xFF38BDF8).withValues(alpha: 0.5)),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, blurRadius: 4, offset: Offset(0, 2))
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -808,7 +938,11 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
             children: [
               const Icon(Icons.edit, color: Color(0xFF38BDF8), size: 13),
               const SizedBox(width: 5),
-              const Text('PENCIL HUD', style: TextStyle(color: Color(0xFF38BDF8), fontSize: 11, fontWeight: FontWeight.bold)),
+              const Text('PENCIL HUD',
+                  style: TextStyle(
+                      color: Color(0xFF38BDF8),
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold)),
               const SizedBox(width: 8),
               InkWell(
                 onTap: () => setState(() {
@@ -816,15 +950,24 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                   _updateBrushRenderer();
                 }),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _pencilPaperTooth ? Colors.amber.withValues(alpha: 0.25) : Colors.grey.withValues(alpha: 0.25),
+                    color: _pencilPaperTooth
+                        ? Colors.amber.withValues(alpha: 0.25)
+                        : Colors.grey.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: _pencilPaperTooth ? Colors.amber : Colors.grey, width: 0.8),
+                    border: Border.all(
+                        color: _pencilPaperTooth ? Colors.amber : Colors.grey,
+                        width: 0.8),
                   ),
                   child: Text(
                     _pencilPaperTooth ? 'Tooth: ON' : 'Tooth: OFF',
-                    style: TextStyle(color: _pencilPaperTooth ? Colors.amberAccent : Colors.white70, fontSize: 9.5),
+                    style: TextStyle(
+                        color: _pencilPaperTooth
+                            ? Colors.amberAccent
+                            : Colors.white70,
+                        fontSize: 9.5),
                   ),
                 ),
               ),
@@ -835,15 +978,24 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                   _updateBrushRenderer();
                 }),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _pencilLeadGrain ? Colors.green.withValues(alpha: 0.25) : Colors.red.withValues(alpha: 0.25),
+                    color: _pencilLeadGrain
+                        ? Colors.green.withValues(alpha: 0.25)
+                        : Colors.red.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: _pencilLeadGrain ? Colors.green : Colors.red, width: 0.8),
+                    border: Border.all(
+                        color: _pencilLeadGrain ? Colors.green : Colors.red,
+                        width: 0.8),
                   ),
                   child: Text(
                     _pencilLeadGrain ? 'Grain: ON' : 'Grain: OFF',
-                    style: TextStyle(color: _pencilLeadGrain ? Colors.greenAccent : Colors.redAccent, fontSize: 9.5),
+                    style: TextStyle(
+                        color: _pencilLeadGrain
+                            ? Colors.greenAccent
+                            : Colors.redAccent,
+                        fontSize: 9.5),
                   ),
                 ),
               ),
@@ -854,15 +1006,24 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                   _updateBrushRenderer();
                 }),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                   decoration: BoxDecoration(
-                    color: _pencilGraphiteHalo ? Colors.cyan.withValues(alpha: 0.25) : Colors.grey.withValues(alpha: 0.25),
+                    color: _pencilGraphiteHalo
+                        ? Colors.cyan.withValues(alpha: 0.25)
+                        : Colors.grey.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(4),
-                    border: Border.all(color: _pencilGraphiteHalo ? Colors.cyan : Colors.grey, width: 0.8),
+                    border: Border.all(
+                        color: _pencilGraphiteHalo ? Colors.cyan : Colors.grey,
+                        width: 0.8),
                   ),
                   child: Text(
                     _pencilGraphiteHalo ? 'Halo: ON' : 'Halo: OFF',
-                    style: TextStyle(color: _pencilGraphiteHalo ? Colors.cyanAccent : Colors.white70, fontSize: 9.5),
+                    style: TextStyle(
+                        color: _pencilGraphiteHalo
+                            ? Colors.cyanAccent
+                            : Colors.white70,
+                        fontSize: 9.5),
                   ),
                 ),
               ),
@@ -872,7 +1033,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('Lead Grade: ', style: TextStyle(color: Colors.white70, fontSize: 10)),
+              const Text('Lead Grade: ',
+                  style: TextStyle(color: Colors.white70, fontSize: 10)),
               _buildPencilGradeButton('0.1 Fine', 0.1),
               const SizedBox(width: 4),
               _buildPencilGradeButton('0.3 Mid', 0.3),
@@ -880,19 +1042,58 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
               _buildPencilGradeButton('0.5 Bold', 0.5),
             ],
           ),
-
           const SizedBox(height: 5),
-          Text('Width:   ${curWidth.toStringAsFixed(2)} px | Vel: ${curVel.toStringAsFixed(0)} px/s', style: const TextStyle(color: Colors.white, fontSize: 10, fontFamily: 'monospace')),
-          Text('Press:   ${curPress.toStringAsFixed(2)} | Lead: ${(curOpacity * 100).toStringAsFixed(0)}%', style: const TextStyle(color: Color(0xFF38BDF8), fontSize: 10, fontFamily: 'monospace')),
+          Text(
+              'Width:   ${curWidth.toStringAsFixed(2)} px | Vel: ${curVel.toStringAsFixed(0)} px/s',
+              style: const TextStyle(
+                  color: Colors.white, fontSize: 10, fontFamily: 'monospace')),
+          Text(
+              'Press:   ${curPress.toStringAsFixed(2)} | Lead: ${(curOpacity * 100).toStringAsFixed(0)}%',
+              style: const TextStyle(
+                  color: Color(0xFF38BDF8),
+                  fontSize: 10,
+                  fontFamily: 'monospace')),
           const Divider(height: 6, thickness: 0.5, color: Colors.white24),
-          Text('Width Update:    ${telem.widthTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Geom Increm:     ${telem.geometryTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Grain Perturb:   ${telem.contourTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Draw Submission: ${telem.drawSubmissionTimeMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.white70, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Active Total:    ${telem.totalTimeMs.toStringAsFixed(2)} ms', style: TextStyle(color: totalColor, fontSize: 10.5, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
+          Text('Width Update:    ${telem.widthTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Geom Increm:     ${telem.geometryTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Grain Perturb:   ${telem.contourTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text(
+              'Draw Submission: ${telem.drawSubmissionTimeMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text('Active Total:    ${telem.totalTimeMs.toStringAsFixed(2)} ms',
+              style: TextStyle(
+                  color: totalColor,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'monospace')),
           const Divider(height: 6, thickness: 0.5, color: Colors.white24),
-          Text('p50: ${telem.p50TotalMs.toStringAsFixed(2)} ms | p95: ${telem.p95TotalMs.toStringAsFixed(2)} ms | max: ${telem.maxTotalMs.toStringAsFixed(2)} ms', style: const TextStyle(color: Colors.cyanAccent, fontSize: 9.5, fontFamily: 'monospace')),
-          Text('Points: ${telem.pointCount} | Contour Verts: ${telem.contourVertexCount}', style: const TextStyle(color: Colors.white60, fontSize: 9.5, fontFamily: 'monospace')),
+          Text(
+              'p50: ${telem.p50TotalMs.toStringAsFixed(2)} ms | p95: ${telem.p95TotalMs.toStringAsFixed(2)} ms | max: ${telem.maxTotalMs.toStringAsFixed(2)} ms',
+              style: const TextStyle(
+                  color: Colors.cyanAccent,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
+          Text(
+              'Points: ${telem.pointCount} | Contour Verts: ${telem.contourVertexCount}',
+              style: const TextStyle(
+                  color: Colors.white60,
+                  fontSize: 9.5,
+                  fontFamily: 'monospace')),
         ],
       ),
     );
@@ -908,7 +1109,9 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF38BDF8).withValues(alpha: 0.3) : Colors.white10,
+          color: isSelected
+              ? const Color(0xFF38BDF8).withValues(alpha: 0.3)
+              : Colors.white10,
           borderRadius: BorderRadius.circular(4),
           border: Border.all(
             color: isSelected ? const Color(0xFF38BDF8) : Colors.white24,
@@ -950,7 +1153,9 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
 
     final smoothingDisplay = _controller.isDrawing
         ? _config.streamlineSlow.toStringAsFixed(2)
-        : (lastReport != null ? lastReport.smoothingAmount.toStringAsFixed(3) : _config.streamlineSlow.toStringAsFixed(2));
+        : (lastReport != null
+            ? lastReport.smoothingAmount.toStringAsFixed(3)
+            : _config.streamlineSlow.toStringAsFixed(2));
 
     final refreshDisplay = _platformMeta.refreshRate != null
         ? '${_platformMeta.refreshRate!.roundToDouble() == _platformMeta.refreshRate ? _platformMeta.refreshRate!.toInt() : _platformMeta.refreshRate!.toStringAsFixed(1)} Hz'
@@ -959,10 +1164,14 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: isMultitouch ? const Color(0xFFC62828).withValues(alpha: 0.90) : Colors.black.withValues(alpha: 0.85),
+        color: isMultitouch
+            ? const Color(0xFFC62828).withValues(alpha: 0.90)
+            : Colors.black.withValues(alpha: 0.85),
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 6)],
-        border: isMultitouch ? Border.all(color: Colors.redAccent, width: 1.5) : null,
+        border: isMultitouch
+            ? Border.all(color: Colors.redAccent, width: 1.5)
+            : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -976,18 +1185,26 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
-                  color: isMultitouch ? Colors.white : (_controller.isDrawing ? Colors.greenAccent : Colors.white70),
+                  color: isMultitouch
+                      ? Colors.white
+                      : (_controller.isDrawing
+                          ? Colors.greenAccent
+                          : Colors.white70),
                 ),
               ),
               const SizedBox(width: 8),
-              Text(devKindStr, style: const TextStyle(fontSize: 11, color: Colors.white70)),
+              Text(devKindStr,
+                  style: const TextStyle(fontSize: 11, color: Colors.white70)),
             ],
           ),
           if (isMultitouch) ...[
             const SizedBox(height: 2),
             const Text(
               'Secondary finger locked (stroke preserved)',
-              style: TextStyle(fontSize: 9, color: Colors.yellowAccent, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 9,
+                  color: Colors.yellowAccent,
+                  fontWeight: FontWeight.bold),
             ),
           ],
           const SizedBox(height: 4),
@@ -997,19 +1214,27 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
           ),
           Text(
             'Velocity: ${diag.currentVelocity.toStringAsFixed(0)} px/s',
-            style: const TextStyle(fontSize: 10.5, color: Colors.amberAccent, fontFamily: 'monospace'),
+            style: const TextStyle(
+                fontSize: 10.5,
+                color: Colors.amberAccent,
+                fontFamily: 'monospace'),
           ),
           Text(
             'Pressure: ${(diag.currentPressure * 100).toStringAsFixed(0)}%',
-            style: const TextStyle(fontSize: 10.5, color: Colors.cyanAccent, fontFamily: 'monospace'),
+            style: const TextStyle(
+                fontSize: 10.5,
+                color: Colors.cyanAccent,
+                fontFamily: 'monospace'),
           ),
           Text(
             'Points: ${diag.rawPoints.length} raw | ${diag.stabilizedPoints.length} smooth | ${diag.catmullPoints.length} spline',
-            style: const TextStyle(fontSize: 10, color: Colors.white70, fontFamily: 'monospace'),
+            style: const TextStyle(
+                fontSize: 10, color: Colors.white70, fontFamily: 'monospace'),
           ),
           Text(
             'Sampling Δt: $dtDisplay | Smoothing: $smoothingDisplay',
-            style: const TextStyle(fontSize: 10, color: Colors.white70, fontFamily: 'monospace'),
+            style: const TextStyle(
+                fontSize: 10, color: Colors.white70, fontFamily: 'monospace'),
           ),
           Text(
             _config.predictionEnabled
@@ -1017,7 +1242,9 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                 : 'Prediction: OFF (Baseline)',
             style: TextStyle(
               fontSize: 10,
-              color: _config.predictionEnabled ? Colors.lightGreenAccent : Colors.white60,
+              color: _config.predictionEnabled
+                  ? Colors.lightGreenAccent
+                  : Colors.white60,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -1025,11 +1252,17 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
             const Divider(color: Colors.white24, height: 8),
             Text(
               'Last [${lastReport.test}]: avg ${lastReport.averageVelocity.toStringAsFixed(0)} px/s | Δt ${lastReport.averageDeltaMs.toStringAsFixed(1)}ms',
-              style: const TextStyle(fontSize: 9.5, color: Colors.greenAccent, fontFamily: 'monospace'),
+              style: const TextStyle(
+                  fontSize: 9.5,
+                  color: Colors.greenAccent,
+                  fontFamily: 'monospace'),
             ),
             Text(
               'Dev: corner ${lastReport.cornerDeviationPx != null ? "${lastReport.cornerDeviationPx!.toStringAsFixed(1)}px" : "none"} | avg ${lastReport.averageDeviationPx.toStringAsFixed(2)}px | max ${lastReport.maxDeviationPx.toStringAsFixed(1)}px',
-              style: const TextStyle(fontSize: 9.5, color: Colors.cyanAccent, fontFamily: 'monospace'),
+              style: const TextStyle(
+                  fontSize: 9.5,
+                  color: Colors.cyanAccent,
+                  fontFamily: 'monospace'),
             ),
             Text(
               'Est. Processing Lag: ${lastReport.estimatedProcessingLatencyMs.toStringAsFixed(1)} ms (filter group delay)',
@@ -1046,7 +1279,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setSheetState) {
@@ -1066,12 +1300,18 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                       child: Container(
                         width: 40,
                         height: 4,
-                        decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2)),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(2)),
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text('StabilizerConfig Tuner', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                    const Text('Calibrate thresholds directly on Android hardware', style: TextStyle(fontSize: 12, color: Colors.black54)),
+                    const Text('StabilizerConfig Tuner',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text(
+                        'Calibrate thresholds directly on Android hardware',
+                        style: TextStyle(fontSize: 12, color: Colors.black54)),
                     const Divider(height: 24),
 
                     // Min Distance
@@ -1130,7 +1370,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                       0.40,
                       (val) {
                         setSheetState(() {});
-                        _applyConfig(_config.copyWith(cornerSmoothingFactor: val));
+                        _applyConfig(
+                            _config.copyWith(cornerSmoothingFactor: val));
                       },
                     ),
 
@@ -1138,12 +1379,17 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                     // Prediction Toggle
                     SwitchListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: const Text('Point Prediction (Experimental)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14)),
-                      subtitle: const Text('Extrapolates 1-frame ahead to eliminate perceived touchscreen lag (keep OFF for baseline)', style: TextStyle(fontSize: 11)),
+                      title: const Text('Point Prediction (Experimental)',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600, fontSize: 14)),
+                      subtitle: const Text(
+                          'Extrapolates 1-frame ahead to eliminate perceived touchscreen lag (keep OFF for baseline)',
+                          style: TextStyle(fontSize: 11)),
                       value: _config.predictionEnabled,
                       onChanged: (enabled) {
                         setSheetState(() {});
-                        _applyConfig(_config.copyWith(predictionEnabled: enabled));
+                        _applyConfig(
+                            _config.copyWith(predictionEnabled: enabled));
                       },
                     ),
 
@@ -1155,7 +1401,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                         32.0,
                         (val) {
                           setSheetState(() {});
-                          _applyConfig(_config.copyWith(predictionHorizonMs: val));
+                          _applyConfig(
+                              _config.copyWith(predictionHorizonMs: val));
                         },
                       ),
                       _buildSlider(
@@ -1165,7 +1412,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
                         30.0,
                         (val) {
                           setSheetState(() {});
-                          _applyConfig(_config.copyWith(maxPredictionDistance: val));
+                          _applyConfig(
+                              _config.copyWith(maxPredictionDistance: val));
                         },
                       ),
                     ],
@@ -1199,7 +1447,8 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
       builder: (context) {
         return _BenchmarkExportSheet(
           controller: _controller,
@@ -1210,11 +1459,13 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
     );
   }
 
-  Widget _buildSlider(String label, double value, double min, double max, ValueChanged<double> onChanged) {
+  Widget _buildSlider(String label, double value, double min, double max,
+      ValueChanged<double> onChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
+        Text(label,
+            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500)),
         Slider(
           value: value.clamp(min, max),
           min: min,
@@ -1261,13 +1512,17 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
     if (_scope == ExportScope.latest) {
       if (latest == null) {
         final placeholder = {
-          'notice': 'No stroke recorded yet. Draw a stroke in any benchmark mode to collect real-device metrics.',
+          'notice':
+              'No stroke recorded yet. Draw a stroke in any benchmark mode to collect real-device metrics.',
           'platform': widget.meta.platform,
-          if (widget.meta.androidVersion != null) 'androidVersion': widget.meta.androidVersion,
+          if (widget.meta.androidVersion != null)
+            'androidVersion': widget.meta.androidVersion,
           'device': widget.meta.device,
-          if (widget.meta.cpuArchitecture != null) 'cpuArchitecture': widget.meta.cpuArchitecture,
+          if (widget.meta.cpuArchitecture != null)
+            'cpuArchitecture': widget.meta.cpuArchitecture,
           'refreshRate': widget.meta.refreshRate != null
-              ? (widget.meta.refreshRate!.roundToDouble() == widget.meta.refreshRate
+              ? (widget.meta.refreshRate!.roundToDouble() ==
+                      widget.meta.refreshRate
                   ? widget.meta.refreshRate!.toInt()
                   : widget.meta.refreshRate)
               : null,
@@ -1288,11 +1543,14 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
 
       final summaryMap = {
         'platform': widget.meta.platform,
-        if (widget.meta.androidVersion != null) 'androidVersion': widget.meta.androidVersion,
+        if (widget.meta.androidVersion != null)
+          'androidVersion': widget.meta.androidVersion,
         'device': widget.meta.device,
-        if (widget.meta.cpuArchitecture != null) 'cpuArchitecture': widget.meta.cpuArchitecture,
+        if (widget.meta.cpuArchitecture != null)
+          'cpuArchitecture': widget.meta.cpuArchitecture,
         'refreshRate': widget.meta.refreshRate != null
-            ? (widget.meta.refreshRate!.roundToDouble() == widget.meta.refreshRate
+            ? (widget.meta.refreshRate!.roundToDouble() ==
+                    widget.meta.refreshRate
                 ? widget.meta.refreshRate!.toInt()
                 : widget.meta.refreshRate)
             : null,
@@ -1353,7 +1611,9 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
             child: Container(
               width: 40,
               height: 4,
-              decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2)),
+              decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2)),
             ),
           ),
           const SizedBox(height: 14),
@@ -1366,11 +1626,14 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Export Benchmark Results', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    const Text('Export Benchmark Results',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 2),
                     Text(
                       '${widget.meta.device} • ${widget.meta.refreshRate != null ? "${widget.meta.refreshRate!.toInt()} Hz" : "refresh rate unknown"}',
-                      style: const TextStyle(fontSize: 11, color: Colors.black54),
+                      style:
+                          const TextStyle(fontSize: 11, color: Colors.black54),
                     ),
                   ],
                 ),
@@ -1393,7 +1656,8 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
                   padding: const EdgeInsets.only(right: 6),
                   child: ChoiceChip(
                     selected: isSelected,
-                    label: Text(scope.label, style: const TextStyle(fontSize: 12)),
+                    label:
+                        Text(scope.label, style: const TextStyle(fontSize: 12)),
                     onSelected: (val) {
                       if (val) setState(() => _scope = scope);
                     },
@@ -1418,17 +1682,26 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildStatBadge('Velocity', '${latest.averageVelocity.toStringAsFixed(0)} px/s'),
+                    _buildStatBadge('Velocity',
+                        '${latest.averageVelocity.toStringAsFixed(0)} px/s'),
                     const SizedBox(width: 12),
-                    _buildStatBadge('Avg Δt', '${latest.averageDeltaMs.toStringAsFixed(1)} ms'),
+                    _buildStatBadge('Avg Δt',
+                        '${latest.averageDeltaMs.toStringAsFixed(1)} ms'),
                     const SizedBox(width: 12),
-                    _buildStatBadge('Corner Dev', latest.cornerDeviationPx != null ? '${latest.cornerDeviationPx!.toStringAsFixed(1)} px' : 'N/A'),
+                    _buildStatBadge(
+                        'Corner Dev',
+                        latest.cornerDeviationPx != null
+                            ? '${latest.cornerDeviationPx!.toStringAsFixed(1)} px'
+                            : 'N/A'),
                     const SizedBox(width: 12),
-                    _buildStatBadge('Avg Dev', '${latest.averageDeviationPx.toStringAsFixed(2)} px'),
+                    _buildStatBadge('Avg Dev',
+                        '${latest.averageDeviationPx.toStringAsFixed(2)} px'),
                     const SizedBox(width: 12),
-                    _buildStatBadge('Max Dev', '${latest.maxDeviationPx.toStringAsFixed(1)} px'),
+                    _buildStatBadge('Max Dev',
+                        '${latest.maxDeviationPx.toStringAsFixed(1)} px'),
                     const SizedBox(width: 12),
-                    _buildStatBadge('Est. Filter Lag', '${latest.estimatedProcessingLatencyMs.toStringAsFixed(1)} ms'),
+                    _buildStatBadge('Est. Filter Lag',
+                        '${latest.estimatedProcessingLatencyMs.toStringAsFixed(1)} ms'),
                   ],
                 ),
               ),
@@ -1468,10 +1741,12 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
                     backgroundColor: Colors.blueGrey.shade900,
                     foregroundColor: Colors.white,
                     minimumSize: const Size.fromHeight(46),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                   ),
                   icon: const Icon(Icons.copy, size: 18),
-                  label: const Text('Copy JSON to Clipboard', style: TextStyle(fontWeight: FontWeight.bold)),
+                  label: const Text('Copy JSON to Clipboard',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   onPressed: () => _copyToClipboard(jsonStr),
                 ),
               ),
@@ -1479,7 +1754,8 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
                 const SizedBox(width: 10),
                 IconButton.outlined(
                   tooltip: 'Clear Session Benchmark History',
-                  icon: const Icon(Icons.delete_sweep_outlined, color: Colors.redAccent),
+                  icon: const Icon(Icons.delete_sweep_outlined,
+                      color: Colors.redAccent),
                   onPressed: () {
                     setState(() {
                       widget.controller.clearBenchmarkHistory();
@@ -1498,9 +1774,17 @@ class _BenchmarkExportSheetState extends State<_BenchmarkExportSheet> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(label, style: TextStyle(fontSize: 10, color: Colors.blueGrey.shade700, fontWeight: FontWeight.w500)),
+        Text(label,
+            style: TextStyle(
+                fontSize: 10,
+                color: Colors.blueGrey.shade700,
+                fontWeight: FontWeight.w500)),
         const SizedBox(height: 2),
-        Text(value, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black87)),
+        Text(value,
+            style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87)),
       ],
     );
   }
@@ -1534,9 +1818,12 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
           ..color = Colors.red.withValues(alpha: 0.35)
           ..strokeWidth = 1.2
           ..style = PaintingStyle.stroke;
-        final rawPath = Path()..moveTo(diagnostics.rawPoints.first.dx, diagnostics.rawPoints.first.dy);
+        final rawPath = Path()
+          ..moveTo(
+              diagnostics.rawPoints.first.dx, diagnostics.rawPoints.first.dy);
         for (int i = 1; i < diagnostics.rawPoints.length; i++) {
-          rawPath.lineTo(diagnostics.rawPoints[i].dx, diagnostics.rawPoints[i].dy);
+          rawPath.lineTo(
+              diagnostics.rawPoints[i].dx, diagnostics.rawPoints[i].dy);
         }
         canvas.drawPath(rawPath, rawLinePaint);
       }
@@ -1556,9 +1843,12 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
           ..color = Colors.blue.withValues(alpha: 0.40)
           ..strokeWidth = 1.5
           ..style = PaintingStyle.stroke;
-        final smoothPath = Path()..moveTo(diagnostics.stabilizedPoints.first.dx, diagnostics.stabilizedPoints.first.dy);
+        final smoothPath = Path()
+          ..moveTo(diagnostics.stabilizedPoints.first.dx,
+              diagnostics.stabilizedPoints.first.dy);
         for (int i = 1; i < diagnostics.stabilizedPoints.length; i++) {
-          smoothPath.lineTo(diagnostics.stabilizedPoints[i].dx, diagnostics.stabilizedPoints[i].dy);
+          smoothPath.lineTo(diagnostics.stabilizedPoints[i].dx,
+              diagnostics.stabilizedPoints[i].dy);
         }
         canvas.drawPath(smoothPath, smoothLinePaint);
       }
@@ -1594,8 +1884,10 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
       canvas.drawCircle(rawApex, 6.0, apexPaint);
-      canvas.drawLine(rawApex - const Offset(8, 0), rawApex + const Offset(8, 0), apexPaint);
-      canvas.drawLine(rawApex - const Offset(0, 8), rawApex + const Offset(0, 8), apexPaint);
+      canvas.drawLine(rawApex - const Offset(8, 0),
+          rawApex + const Offset(8, 0), apexPaint);
+      canvas.drawLine(rawApex - const Offset(0, 8),
+          rawApex + const Offset(0, 8), apexPaint);
 
       // Processed apex marker (cyan ring)
       final procApexPaint = Paint()
@@ -1613,7 +1905,9 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
 
       // Apex deviation text badge
       final devPx = corner?.apexDeviationPx ?? (rawApex - procApex).distance;
-      final angleStr = corner?.detectedAngleDeg != null ? '${corner!.detectedAngleDeg!.toStringAsFixed(0)}°' : '';
+      final angleStr = corner?.detectedAngleDeg != null
+          ? '${corner!.detectedAngleDeg!.toStringAsFixed(0)}°'
+          : '';
       final label = ' Apex Dev: ${devPx.toStringAsFixed(1)}px $angleStr ';
       final textPainter = TextPainter(
         text: TextSpan(
@@ -1632,7 +1926,9 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
 
     // 5. Best-Fit Straight Line (for long_straight_line mode)
     final straightLine = lastReport?.geometry?.straightLine;
-    if (straightLine != null && lastReport?.test == 'long_straight_line' && diagnostics.rawPoints.length >= 2) {
+    if (straightLine != null &&
+        lastReport?.test == 'long_straight_line' &&
+        diagnostics.rawPoints.length >= 2) {
       final linePaint = Paint()
         ..color = Colors.deepPurpleAccent.withValues(alpha: 0.65)
         ..strokeWidth = 1.4
@@ -1653,7 +1949,9 @@ class _DiagnosticsOverlayPainter extends CustomPainter {
     }
 
     // 7. Predicted tip vector (Green ring + dashed forward vector)
-    if (showPredictedTip && diagnostics.predictedTip != null && diagnostics.stabilizedPoints.isNotEmpty) {
+    if (showPredictedTip &&
+        diagnostics.predictedTip != null &&
+        diagnostics.stabilizedPoints.isNotEmpty) {
       final tip = diagnostics.predictedTip!;
       final lastReal = diagnostics.stabilizedPoints.last;
 
@@ -1699,7 +1997,8 @@ class _TemplateGuidePainter extends CustomPainter {
           ..quadraticBezierTo(cx - 95, cy - 25, cx - 80, cy)
           ..quadraticBezierTo(cx - 60, cy - 70, cx - 50, cy)
           ..quadraticBezierTo(cx - 30, cy - 70, cx - 20, cy)
-          ..addOval(Rect.fromCircle(center: Offset(cx + 15, cy - 15), radius: 18));
+          ..addOval(
+              Rect.fromCircle(center: Offset(cx + 15, cy - 15), radius: 18));
         canvas.drawPath(path, paint);
         break;
 
@@ -1725,8 +2024,10 @@ class _TemplateGuidePainter extends CustomPainter {
         for (int i = 0; i < 5; i++) {
           final radOuter = i * (2 * math.pi / 5) - math.pi / 2;
           final radInner = radOuter + math.pi / 5;
-          final pOuter = Offset(cx + 90 * math.cos(radOuter), cy + 90 * math.sin(radOuter));
-          final pInner = Offset(cx + 40 * math.cos(radInner), cy + 40 * math.sin(radInner));
+          final pOuter = Offset(
+              cx + 90 * math.cos(radOuter), cy + 90 * math.sin(radOuter));
+          final pInner = Offset(
+              cx + 40 * math.cos(radInner), cy + 40 * math.sin(radInner));
           if (i == 0) {
             path.moveTo(pOuter.dx, pOuter.dy);
           } else {
@@ -1751,7 +2052,8 @@ class _TemplateGuidePainter extends CustomPainter {
 
       case BenchmarkMode.longLine:
         // Long diagonal straight line
-        canvas.drawLine(Offset(cx - 140, cy - 120), Offset(cx + 140, cy + 120), paint);
+        canvas.drawLine(
+            Offset(cx - 140, cy - 120), Offset(cx + 140, cy + 120), paint);
         break;
 
       case BenchmarkMode.tinyDetail:
@@ -1770,7 +2072,8 @@ class _TemplateGuidePainter extends CustomPainter {
           ..lineTo(cx + 120, cy - 40)
           ..arcToPoint(Offset(cx + 120, cy), radius: const Radius.circular(20))
           ..lineTo(cx - 120, cy)
-          ..arcToPoint(Offset(cx - 120, cy + 40), radius: const Radius.circular(20), clockwise: false)
+          ..arcToPoint(Offset(cx - 120, cy + 40),
+              radius: const Radius.circular(20), clockwise: false)
           ..lineTo(cx + 120, cy + 40);
         canvas.drawPath(path, paint);
         break;
@@ -1778,5 +2081,6 @@ class _TemplateGuidePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _TemplateGuidePainter oldDelegate) => oldDelegate.mode != mode;
+  bool shouldRepaint(covariant _TemplateGuidePainter oldDelegate) =>
+      oldDelegate.mode != mode;
 }

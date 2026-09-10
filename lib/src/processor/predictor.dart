@@ -30,7 +30,8 @@ class Predictor {
 
     final horizonSec = config.predictionHorizonMs / 1000.0;
     final idealDistance = velocity * horizonSec;
-    final cappedDistance = math.min(idealDistance, config.maxPredictionDistance);
+    final cappedDistance =
+        math.min(idealDistance, config.maxPredictionDistance);
 
     if (cappedDistance < 1.0) return null;
 
@@ -41,7 +42,8 @@ class Predictor {
 
     return StrokePoint(
       position: predictedPos,
-      timestamp: timestamp + Duration(milliseconds: config.predictionHorizonMs.toInt()),
+      timestamp: timestamp +
+          Duration(milliseconds: config.predictionHorizonMs.toInt()),
       pressure: pressure,
       width: width,
       velocity: velocity,

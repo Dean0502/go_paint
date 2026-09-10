@@ -63,9 +63,12 @@ void main() {
       stabilizer.reset();
 
       // Send 3 initial points
-      stabilizer.addSample(const PointerSample(position: Offset(0, 0), timestamp: Duration.zero));
-      stabilizer.addSample(const PointerSample(position: Offset(10, 0), timestamp: Duration(milliseconds: 10)));
-      stabilizer.addSample(const PointerSample(position: Offset(20, 0), timestamp: Duration(milliseconds: 20)));
+      stabilizer.addSample(const PointerSample(
+          position: Offset(0, 0), timestamp: Duration.zero));
+      stabilizer.addSample(const PointerSample(
+          position: Offset(10, 0), timestamp: Duration(milliseconds: 10)));
+      stabilizer.addSample(const PointerSample(
+          position: Offset(20, 0), timestamp: Duration(milliseconds: 20)));
 
       // Fast flick leap > 14px
       final fastPoints = stabilizer.addSample(const PointerSample(

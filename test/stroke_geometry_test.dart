@@ -5,13 +5,15 @@ import 'package:go_paint/go_paint.dart';
 void main() {
   group('Professional Stroke Geometry Engine (v0.4) Tests', () {
     // 1. Single point tap (clean round dab)
-    test('1. Single point tap produces a valid closed circular dab without NaN', () {
+    test('1. Single point tap produces a valid closed circular dab without NaN',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(20.0),
         cap: StrokeCapType.round,
       );
 
-      final outline = builder.buildFromOffsets([const Offset(100, 100)], width: 20.0);
+      final outline =
+          builder.buildFromOffsets([const Offset(100, 100)], width: 20.0);
 
       expect(outline.isNotEmpty, isTrue);
       expect(outline.centerline.length, 1);
@@ -76,7 +78,9 @@ void main() {
     });
 
     // 4. Horizontal line mathematical validation: y=100, width=20 -> upper y=90, lower y=110
-    test('4. Horizontal line mathematical validation: y=100, width=20 produces upper y=90 and lower y=110', () {
+    test(
+        '4. Horizontal line mathematical validation: y=100, width=20 produces upper y=90 and lower y=110',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(20.0),
         cap: StrokeCapType.butt,
@@ -100,7 +104,9 @@ void main() {
     });
 
     // 5. Vertical line mathematical validation: x=100, width=20 -> left x=110, right x=90
-    test('5. Vertical line mathematical validation: x=100, width=20 produces exact left/right boundary offsets', () {
+    test(
+        '5. Vertical line mathematical validation: x=100, width=20 produces exact left/right boundary offsets',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(20.0),
         cap: StrokeCapType.butt,
@@ -120,7 +126,8 @@ void main() {
     });
 
     // 6. Diagonal line mathematical validation: 45 deg, width=20
-    test('6. Diagonal 45-degree line produces exact perpendicular thickness', () {
+    test('6. Diagonal 45-degree line produces exact perpendicular thickness',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(20.0),
         cap: StrokeCapType.butt,
@@ -151,7 +158,8 @@ void main() {
       const count = 36;
       for (int i = 0; i <= count; i++) {
         final angle = i * 2 * math.pi / count;
-        circlePoints.add(Offset(100 + 50 * math.cos(angle), 100 + 50 * math.sin(angle)));
+        circlePoints.add(
+            Offset(100 + 50 * math.cos(angle), 100 + 50 * math.sin(angle)));
       }
 
       final outline = builder.buildFromOffsets(circlePoints, width: 10.0);
@@ -205,7 +213,8 @@ void main() {
     });
 
     // 10. 180° reversal
-    test('10. 180-degree turnaround handles reversal safely without crashing', () {
+    test('10. 180-degree turnaround handles reversal safely without crashing',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
         cap: StrokeCapType.round,
@@ -243,7 +252,8 @@ void main() {
     });
 
     // 12. Large point spacing
-    test('12. Large point spacing maintains continuous geometry without gaps', () {
+    test('12. Large point spacing maintains continuous geometry without gaps',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
       );
@@ -258,7 +268,8 @@ void main() {
     });
 
     // 13. Constant width
-    test('13. Constant width maintains identical thickness along complex path', () {
+    test('13. Constant width maintains identical thickness along complex path',
+        () {
       const profile = ConstantWidthProfile(16.0);
       const builder = StrokeGeometryBuilder(widthProfile: profile);
 
@@ -278,7 +289,9 @@ void main() {
     });
 
     // 14. Variable width (pressure + velocity)
-    test('14. DynamicWidthProfile dynamically modulates width with pressure and velocity', () {
+    test(
+        '14. DynamicWidthProfile dynamically modulates width with pressure and velocity',
+        () {
       const config = StrokeWidthConfig(
         baseWidth: 10.0,
         pressureEnabled: true,
@@ -345,7 +358,9 @@ void main() {
     });
 
     // 17. Square caps
-    test('17. Square cap extends forward/backward by radius with square corners', () {
+    test(
+        '17. Square cap extends forward/backward by radius with square corners',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(20.0),
         cap: StrokeCapType.square,
@@ -395,7 +410,8 @@ void main() {
     });
 
     // 20. Miter joins
-    test('20. Miter join extends outer apex to true geometric intersection', () {
+    test('20. Miter join extends outer apex to true geometric intersection',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
         join: StrokeJoinType.miter,
@@ -417,7 +433,9 @@ void main() {
     });
 
     // 21. Extreme acute angle with miter limit enforcement
-    test('21. Extreme acute angle miter ratio triggers bevel fallback when exceeding miterLimit', () {
+    test(
+        '21. Extreme acute angle miter ratio triggers bevel fallback when exceeding miterLimit',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
         join: StrokeJoinType.miter,
@@ -437,7 +455,9 @@ void main() {
     });
 
     // 22. No NaN / infinite coordinates
-    test('22. Outlines contain zero NaN and zero infinite coordinates across complex geometry', () {
+    test(
+        '22. Outlines contain zero NaN and zero infinite coordinates across complex geometry',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(12.0),
       );
@@ -458,7 +478,9 @@ void main() {
     });
 
     // 23. Closed outline verification
-    test('23. Path is closed and first/last contour points connect continuously', () {
+    test(
+        '23. Path is closed and first/last contour points connect continuously',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
       );
@@ -496,7 +518,9 @@ void main() {
     });
 
     // 25. High-speed stroke
-    test('25. High-speed stroke with large jump steps generates continuous stable outline', () {
+    test(
+        '25. High-speed stroke with large jump steps generates continuous stable outline',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
       );
@@ -513,7 +537,9 @@ void main() {
     });
 
     // 26. Zero width handling
-    test('26. Zero width handling produces safe empty/degenerate outline without crash', () {
+    test(
+        '26. Zero width handling produces safe empty/degenerate outline without crash',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(0.0),
       );
@@ -527,7 +553,8 @@ void main() {
     });
 
     // 27. Negative/invalid configuration
-    test('27. StrokeWidthConfig validates assertions on negative arguments', () {
+    test('27. StrokeWidthConfig validates assertions on negative arguments',
+        () {
       expect(
         () => StrokeWidthConfig(baseWidth: -1.0),
         throwsAssertionError,
@@ -543,7 +570,9 @@ void main() {
     });
 
     // 28. Duplicate points
-    test('28. Consecutive duplicate points are safely collapsed without zero division', () {
+    test(
+        '28. Consecutive duplicate points are safely collapsed without zero division',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(10.0),
       );
@@ -560,7 +589,9 @@ void main() {
     });
 
     // 29. Extremely close points
-    test('29. Extremely close points (< 1e-4) are filtered without producing NaN', () {
+    test(
+        '29. Extremely close points (< 1e-4) are filtered without producing NaN',
+        () {
       const builder = StrokeGeometryBuilder(
         widthProfile: ConstantWidthProfile(8.0),
       );
@@ -579,14 +610,18 @@ void main() {
     });
 
     // 30. Stroke and OutlineInkRenderer integration
-    test('30. OutlineInkRenderer integrates with Stroke object and renders without error', () {
+    test(
+        '30. OutlineInkRenderer integrates with Stroke object and renders without error',
+        () {
       final stroke = Stroke(
         id: 'test_stroke',
         baseWidth: 12.0,
         points: [
           const StrokePoint(position: Offset(10, 10), timestamp: Duration.zero),
-          const StrokePoint(position: Offset(50, 30), timestamp: Duration(milliseconds: 16)),
-          const StrokePoint(position: Offset(90, 80), timestamp: Duration(milliseconds: 32)),
+          const StrokePoint(
+              position: Offset(50, 30), timestamp: Duration(milliseconds: 16)),
+          const StrokePoint(
+              position: Offset(90, 80), timestamp: Duration(milliseconds: 32)),
         ],
       );
 

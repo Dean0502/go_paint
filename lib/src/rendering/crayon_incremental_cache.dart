@@ -91,14 +91,16 @@ class CrayonIncrementalCache {
 
   // Rolling telemetry window (last 120 samples)
   final List<double> _recentTotalTimes = [];
-  CrayonIncrementalTelemetry _latestTelemetry = const CrayonIncrementalTelemetry();
+  CrayonIncrementalTelemetry _latestTelemetry =
+      const CrayonIncrementalTelemetry();
 
   CrayonIncrementalCache({required this.config});
 
   CrayonIncrementalTelemetry get latestTelemetry => _latestTelemetry;
 
   /// Retrieves a completed stroke's cached render representation, or null if uncached.
-  CachedCrayonStroke? getCompleted(String strokeId) => _completedStrokes[strokeId];
+  CachedCrayonStroke? getCompleted(String strokeId) =>
+      _completedStrokes[strokeId];
 
   /// Stores a completed stroke's cached render representation.
   void cacheCompleted(String strokeId, CachedCrayonStroke cached) {
@@ -158,7 +160,8 @@ class CrayonIncrementalCache {
       if (_filteredPoints.isEmpty) {
         _filteredPoints.add(p);
       } else {
-        if (GeometryMath.distance(_filteredPoints.last.position, p.position) >= 1e-4) {
+        if (GeometryMath.distance(_filteredPoints.last.position, p.position) >=
+            1e-4) {
           _filteredPoints.add(p);
         }
       }
@@ -167,14 +170,18 @@ class CrayonIncrementalCache {
 
     // Single point dab
     if (_filteredPoints.length == 1) {
-      final r = config.widthProfile.computeRadii(
-        _filteredPoints,
-        baseWidth: stroke.baseWidth,
-        isComplete: stroke.isComplete,
-      ).first;
+      final r = config.widthProfile
+          .computeRadii(
+            _filteredPoints,
+            baseWidth: stroke.baseWidth,
+            isComplete: stroke.isComplete,
+          )
+          .first;
       _radii.clear();
       _radii.add(r);
-      _cachedVisualPath = Path()..addOval(Rect.fromCircle(center: _filteredPoints.first.position, radius: r));
+      _cachedVisualPath = Path()
+        ..addOval(
+            Rect.fromCircle(center: _filteredPoints.first.position, radius: r));
       swTotal.stop();
       _recordTelemetry(
         inputMs: inputDurationMs,
@@ -213,7 +220,10 @@ class CrayonIncrementalCache {
       contourMs: swContour.elapsedMicroseconds / 1000.0,
       totalMs: totalMs,
       ptCount: _filteredPoints.length,
-      vertexCount: _perturbedLeft.length + _perturbedRight.length + _startCap.length + _currentEndCap.length,
+      vertexCount: _perturbedLeft.length +
+          _perturbedRight.length +
+          _startCap.length +
+          _currentEndCap.length,
     );
 
     return _cachedVisualPath;
@@ -371,7 +381,8 @@ class CrayonIncrementalCache {
       final norm = Offset(-tangent.dy / tangentLen, tangent.dx / tangentLen);
       final s = (capArc + 250.0) / config.edgeVariationWavelength;
       final noise = 0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
-      _perturbedStartCap.add(pt + norm * (noise * config.edgeVariationAmplitude));
+      _perturbedStartCap
+          .add(pt + norm * (noise * config.edgeVariationAmplitude));
     }
   }
 
@@ -382,7 +393,8 @@ class CrayonIncrementalCache {
     }
 
     if (_leftBoundary.length > 1) {
-      _leftArcLen += GeometryMath.distance(_leftBoundary[_leftBoundary.length - 2], pt);
+      _leftArcLen +=
+          GeometryMath.distance(_leftBoundary[_leftBoundary.length - 2], pt);
     }
 
     Offset norm;
@@ -390,7 +402,9 @@ class CrayonIncrementalCache {
       final prev = _leftBoundary[_leftBoundary.length - 2];
       final tangent = pt - prev;
       final dist = tangent.distance;
-      norm = dist > 1e-5 ? Offset(-tangent.dy / dist, tangent.dx / dist) : Offset.zero;
+      norm = dist > 1e-5
+          ? Offset(-tangent.dy / dist, tangent.dx / dist)
+          : Offset.zero;
     } else {
       norm = initialNorm ?? Offset.zero;
     }
@@ -407,7 +421,8 @@ class CrayonIncrementalCache {
     }
 
     if (_rightBoundary.length > 1) {
-      _rightArcLen += GeometryMath.distance(_rightBoundary[_rightBoundary.length - 2], pt);
+      _rightArcLen +=
+          GeometryMath.distance(_rightBoundary[_rightBoundary.length - 2], pt);
     }
 
     Offset norm;
@@ -415,7 +430,9 @@ class CrayonIncrementalCache {
       final prev = _rightBoundary[_rightBoundary.length - 2];
       final tangent = pt - prev;
       final dist = tangent.distance;
-      norm = dist > 1e-5 ? Offset(tangent.dy / dist, -tangent.dx / dist) : Offset.zero;
+      norm = dist > 1e-5
+          ? Offset(tangent.dy / dist, -tangent.dx / dist)
+          : Offset.zero;
     } else {
       norm = initialNorm ?? Offset.zero;
     }
@@ -436,12 +453,15 @@ class CrayonIncrementalCache {
     }
 
     // Perturb end cap
-    if (config.enableEdgeVariation && config.edgeVariationAmplitude > 0.0 && _currentEndCap.isNotEmpty) {
+    if (config.enableEdgeVariation &&
+        config.edgeVariationAmplitude > 0.0 &&
+        _currentEndCap.isNotEmpty) {
       double endArc = 0.0;
       for (int i = 0; i < _currentEndCap.length; i++) {
         final pt = _currentEndCap[i];
         if (i > 0) endArc += GeometryMath.distance(_currentEndCap[i - 1], pt);
-        final prev = _currentEndCap[(i - 1 + _currentEndCap.length) % _currentEndCap.length];
+        final prev = _currentEndCap[
+            (i - 1 + _currentEndCap.length) % _currentEndCap.length];
         final next = _currentEndCap[(i + 1) % _currentEndCap.length];
         final tangent = next - prev;
         final tLen = tangent.distance;
@@ -450,7 +470,8 @@ class CrayonIncrementalCache {
         } else {
           final norm = Offset(-tangent.dy / tLen, tangent.dx / tLen);
           final s = (_leftArcLen + endArc) / config.edgeVariationWavelength;
-          final noise = 0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
+          final noise =
+              0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
           final displaced = pt + norm * (noise * config.edgeVariationAmplitude);
           path.lineTo(displaced.dx, displaced.dy);
         }
@@ -467,7 +488,8 @@ class CrayonIncrementalCache {
     }
 
     // Start cap
-    final startPts = _perturbedStartCap.isNotEmpty ? _perturbedStartCap : _startCap;
+    final startPts =
+        _perturbedStartCap.isNotEmpty ? _perturbedStartCap : _startCap;
     for (final pt in startPts) {
       path.lineTo(pt.dx, pt.dy);
     }
@@ -491,8 +513,11 @@ class CrayonIncrementalCache {
     }
 
     final sorted = List<double>.from(_recentTotalTimes)..sort();
-    final p50 = sorted.isNotEmpty ? sorted[(sorted.length * 0.50).floor()] : totalMs;
-    final p95 = sorted.isNotEmpty ? sorted[(sorted.length * 0.95).floor().clamp(0, sorted.length - 1)] : totalMs;
+    final p50 =
+        sorted.isNotEmpty ? sorted[(sorted.length * 0.50).floor()] : totalMs;
+    final p95 = sorted.isNotEmpty
+        ? sorted[(sorted.length * 0.95).floor().clamp(0, sorted.length - 1)]
+        : totalMs;
     final maxT = sorted.isNotEmpty ? sorted.last : totalMs;
 
     _latestTelemetry = CrayonIncrementalTelemetry(
@@ -551,11 +576,15 @@ class CrayonIncrementalCache {
       if (i > 0) {
         final tangent = pt - left[i - 1];
         final dist = tangent.distance;
-        norm = dist > 1e-5 ? Offset(-tangent.dy / dist, tangent.dx / dist) : Offset.zero;
+        norm = dist > 1e-5
+            ? Offset(-tangent.dy / dist, tangent.dx / dist)
+            : Offset.zero;
       } else if (left.length > 1) {
         final tangent = left[1] - pt;
         final dist = tangent.distance;
-        norm = dist > 1e-5 ? Offset(-tangent.dy / dist, tangent.dx / dist) : Offset.zero;
+        norm = dist > 1e-5
+            ? Offset(-tangent.dy / dist, tangent.dx / dist)
+            : Offset.zero;
       } else {
         norm = Offset.zero;
       }
@@ -600,8 +629,10 @@ class CrayonIncrementalCache {
           } else {
             final norm = Offset(-tangent.dy / tLen, tangent.dx / tLen);
             final s = (arcL + endArc) / config.edgeVariationWavelength;
-            final noise = 0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
-            final displaced = pt + norm * (noise * config.edgeVariationAmplitude);
+            final noise =
+                0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
+            final displaced =
+                pt + norm * (noise * config.edgeVariationAmplitude);
             path.lineTo(displaced.dx, displaced.dy);
           }
         }
@@ -626,11 +657,15 @@ class CrayonIncrementalCache {
       if (i > 0) {
         final tangent = pt - right[i - 1];
         final dist = tangent.distance;
-        norm = dist > 1e-5 ? Offset(tangent.dy / dist, -tangent.dx / dist) : Offset.zero;
+        norm = dist > 1e-5
+            ? Offset(tangent.dy / dist, -tangent.dx / dist)
+            : Offset.zero;
       } else if (right.length > 1) {
         final tangent = right[1] - pt;
         final dist = tangent.distance;
-        norm = dist > 1e-5 ? Offset(tangent.dy / dist, -tangent.dx / dist) : Offset.zero;
+        norm = dist > 1e-5
+            ? Offset(tangent.dy / dist, -tangent.dx / dist)
+            : Offset.zero;
       } else {
         norm = Offset.zero;
       }
@@ -662,7 +697,8 @@ class CrayonIncrementalCache {
         for (int i = 0; i < startCapPts.length; i++) {
           final pt = startCapPts[i];
           if (i > 0) startArc += GeometryMath.distance(startCapPts[i - 1], pt);
-          final prev = startCapPts[(i - 1 + startCapPts.length) % startCapPts.length];
+          final prev =
+              startCapPts[(i - 1 + startCapPts.length) % startCapPts.length];
           final next = startCapPts[(i + 1) % startCapPts.length];
           final tangent = next - prev;
           final tLen = tangent.distance;
@@ -671,8 +707,10 @@ class CrayonIncrementalCache {
           } else {
             final norm = Offset(-tangent.dy / tLen, tangent.dx / tLen);
             final s = (startArc + 250.0) / config.edgeVariationWavelength;
-            final noise = 0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
-            final displaced = pt + norm * (noise * config.edgeVariationAmplitude);
+            final noise =
+                0.70 * _hashNoise(s) + 0.30 * _hashNoise(s * 2.37 + 19.3);
+            final displaced =
+                pt + norm * (noise * config.edgeVariationAmplitude);
             path.lineTo(displaced.dx, displaced.dy);
           }
         }

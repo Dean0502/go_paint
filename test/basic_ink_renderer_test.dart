@@ -31,9 +31,12 @@ void main() {
         id: 'line_1',
         points: const [
           StrokePoint(position: Offset(10, 10), timestamp: Duration.zero),
-          StrokePoint(position: Offset(30, 20), timestamp: Duration(milliseconds: 10)),
-          StrokePoint(position: Offset(60, 50), timestamp: Duration(milliseconds: 20)),
-          StrokePoint(position: Offset(100, 80), timestamp: Duration(milliseconds: 30)),
+          StrokePoint(
+              position: Offset(30, 20), timestamp: Duration(milliseconds: 10)),
+          StrokePoint(
+              position: Offset(60, 50), timestamp: Duration(milliseconds: 20)),
+          StrokePoint(
+              position: Offset(100, 80), timestamp: Duration(milliseconds: 30)),
         ],
         color: Colors.black,
         baseWidth: 4.0,
@@ -55,7 +58,9 @@ void main() {
           id: 'stroke_1',
           points: const [
             StrokePoint(position: Offset(0, 0), timestamp: Duration.zero),
-            StrokePoint(position: Offset(50, 50), timestamp: Duration(milliseconds: 10)),
+            StrokePoint(
+                position: Offset(50, 50),
+                timestamp: Duration(milliseconds: 10)),
           ],
         ),
       ];
@@ -63,7 +68,8 @@ void main() {
         id: 'active_1',
         points: const [
           StrokePoint(position: Offset(100, 100), timestamp: Duration.zero),
-          StrokePoint(position: Offset(120, 120), timestamp: Duration(milliseconds: 5)),
+          StrokePoint(
+              position: Offset(120, 120), timestamp: Duration(milliseconds: 5)),
         ],
       );
 

@@ -61,4 +61,3 @@ class KidzCanvas extends StatelessWidget {
 
 /// Package-level alias for [KidzCanvas].
 typedef GoPaint = KidzCanvas;
-

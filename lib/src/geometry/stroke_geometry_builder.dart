@@ -39,8 +39,8 @@ class StrokeGeometryBuilder {
     this.join = StrokeJoinType.round,
     this.miterLimit = 4.0,
     this.arcSteps = 8,
-  }) : assert(miterLimit >= 1.0, 'miterLimit must be >= 1.0'),
-       assert(arcSteps >= 2, 'arcSteps must be >= 2');
+  })  : assert(miterLimit >= 1.0, 'miterLimit must be >= 1.0'),
+        assert(arcSteps >= 2, 'arcSteps must be >= 2');
 
   /// Builds a [StrokeOutline] from a [Stroke].
   StrokeOutline build(Stroke stroke) {

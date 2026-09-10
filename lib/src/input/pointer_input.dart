@@ -40,10 +40,12 @@ class PointerInput {
   }
 
   Stroke? get activeStroke => _activeStroke;
-  bool get isDrawing => _state == PointerInputState.drawing && _activeStroke != null;
+  bool get isDrawing =>
+      _state == PointerInputState.drawing && _activeStroke != null;
   PointerInputState get state => _state;
   int get activePointerCount => _activePointers.length;
-  StrokeDiagnostics get diagnostics => stabilizer.getDiagnostics(activePointerCount: _activePointers.length);
+  StrokeDiagnostics get diagnostics =>
+      stabilizer.getDiagnostics(activePointerCount: _activePointers.length);
 
   /// The quantitative benchmark report from the most recently completed stroke.
   StrokeBenchmarkReport? get lastBenchmarkReport => _lastBenchmarkReport;
@@ -86,7 +88,8 @@ class PointerInput {
 
       _state = PointerInputState.multitouch;
 
-      if (multiTouchPolicy == MultiTouchPolicy.completeCurrentStroke && _activeStroke != null) {
+      if (multiTouchPolicy == MultiTouchPolicy.completeCurrentStroke &&
+          _activeStroke != null) {
         // Gracefully finalize and commit existing stroke so far
         final completed = _activeStroke!.copyWith(
           points: stabilizer.smoothedPoints,
@@ -138,13 +141,15 @@ class PointerInput {
 
   /// Handles pointer dragging movement.
   Stroke? onPointerMove(PointerSample sample) {
-    if (_state != PointerInputState.drawing || _drawingPointerId != sample.pointerId) {
+    if (_state != PointerInputState.drawing ||
+        _drawingPointerId != sample.pointerId) {
       return null;
     }
 
     if (_activeStroke == null) return null;
 
-    final newPoints = stabilizer.addSample(sample, baseWidth: _activeStroke!.baseWidth);
+    final newPoints =
+        stabilizer.addSample(sample, baseWidth: _activeStroke!.baseWidth);
     if (newPoints.isEmpty) {
       return _activeStroke;
     }
@@ -153,7 +158,8 @@ class PointerInput {
     final displayPoints = List.of(realPoints);
 
     // If prediction is enabled, append a transient predicted point to active render
-    final predictedTip = stabilizer.predictTip(baseWidth: _activeStroke!.baseWidth);
+    final predictedTip =
+        stabilizer.predictTip(baseWidth: _activeStroke!.baseWidth);
     if (predictedTip != null) {
       displayPoints.add(predictedTip);
     }

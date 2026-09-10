@@ -53,7 +53,8 @@ class SimulatedPressureSource extends PressureSource {
   }) {
     if (maxVelocity <= 0.0) return maxPressure;
     final normV = (velocity / maxVelocity).clamp(0.0, 1.0);
-    final simulated = maxPressure - math.pow(normV, velocityExponent) * (maxPressure - minPressure);
+    final simulated = maxPressure -
+        math.pow(normV, velocityExponent) * (maxPressure - minPressure);
     return simulated.clamp(minPressure, maxPressure);
   }
 }
@@ -79,10 +80,12 @@ class AdaptivePressureSource extends PressureSource {
 
     // Use hardware pressure if stylus device has reported valid varied pressure
     if (isStylus && sample.pressure > 0.0 && sample.pressure < 1.0) {
-      return hardwareSource.resolve(sample, velocity: velocity, maxVelocity: maxVelocity);
+      return hardwareSource.resolve(sample,
+          velocity: velocity, maxVelocity: maxVelocity);
     }
 
     // Otherwise use calibrated kinematic simulation
-    return simulatedSource.resolve(sample, velocity: velocity, maxVelocity: maxVelocity);
+    return simulatedSource.resolve(sample,
+        velocity: velocity, maxVelocity: maxVelocity);
   }
 }

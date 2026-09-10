@@ -68,12 +68,16 @@ class PencilConfig {
     bool? enableEdgeSoftness,
     double? edgeSoftnessWidth,
     double? edgeSoftnessAlphaRatio,
-  })  : assert(baseOpacity >= 0.0 && baseOpacity <= 1.0, 'baseOpacity must be in [0, 1]'),
-        assert(leadGrainAmplitude >= 0.0, 'leadGrainAmplitude must be non-negative'),
-        assert(leadGrainWavelength > 0.0, 'leadGrainWavelength must be positive'),
+  })  : assert(baseOpacity >= 0.0 && baseOpacity <= 1.0,
+            'baseOpacity must be in [0, 1]'),
+        assert(leadGrainAmplitude >= 0.0,
+            'leadGrainAmplitude must be non-negative'),
+        assert(
+            leadGrainWavelength > 0.0, 'leadGrainWavelength must be positive'),
         assert(underwashAlphaRatio >= 0.0 && underwashAlphaRatio <= 1.0,
             'underwashAlphaRatio must be in [0, 1]'),
-        assert(graphiteHaloWidth >= 0.0, 'graphiteHaloWidth must be non-negative'),
+        assert(
+            graphiteHaloWidth >= 0.0, 'graphiteHaloWidth must be non-negative'),
         assert(graphiteHaloAlphaRatio >= 0.0 && graphiteHaloAlphaRatio <= 1.0,
             'graphiteHaloAlphaRatio must be in [0, 1]');
 
@@ -97,20 +101,25 @@ class PencilConfig {
     return PencilConfig(
       widthProfile: widthProfile ?? this.widthProfile,
       baseOpacity: baseOpacity ?? this.baseOpacity,
-      velocityOpacityInfluence: velocityOpacityInfluence ?? this.velocityOpacityInfluence,
-      pressureOpacityInfluence: pressureOpacityInfluence ?? this.pressureOpacityInfluence,
+      velocityOpacityInfluence:
+          velocityOpacityInfluence ?? this.velocityOpacityInfluence,
+      pressureOpacityInfluence:
+          pressureOpacityInfluence ?? this.pressureOpacityInfluence,
       enableLeadGrain: enableLeadGrain ?? this.enableLeadGrain,
       leadGrainAmplitude: leadGrainAmplitude ?? this.leadGrainAmplitude,
       leadGrainWavelength: leadGrainWavelength ?? this.leadGrainWavelength,
       enablePaperTooth: enablePaperTooth ?? this.enablePaperTooth,
       underwashAlphaRatio: underwashAlphaRatio ?? this.underwashAlphaRatio,
-      enableGraphiteHalo: enableGraphiteHalo ?? enableEdgeSoftness ?? this.enableGraphiteHalo,
-      graphiteHaloWidth: graphiteHaloWidth ?? edgeSoftnessWidth ?? this.graphiteHaloWidth,
-      graphiteHaloAlphaRatio: graphiteHaloAlphaRatio ?? edgeSoftnessAlphaRatio ?? this.graphiteHaloAlphaRatio,
+      enableGraphiteHalo:
+          enableGraphiteHalo ?? enableEdgeSoftness ?? this.enableGraphiteHalo,
+      graphiteHaloWidth:
+          graphiteHaloWidth ?? edgeSoftnessWidth ?? this.graphiteHaloWidth,
+      graphiteHaloAlphaRatio: graphiteHaloAlphaRatio ??
+          edgeSoftnessAlphaRatio ??
+          this.graphiteHaloAlphaRatio,
     );
   }
 }
-
 
 /// Authentic Graphite Pencil brush renderer.
 ///
@@ -145,7 +154,8 @@ class PencilRenderer implements StrokeRenderer {
       baseWidth: stroke.baseWidth,
       isComplete: stroke.isComplete,
     );
-    final offsets = List<Offset>.generate(filtered.length, (i) => filtered[i].position);
+    final offsets =
+        List<Offset>.generate(filtered.length, (i) => filtered[i].position);
 
     const builder = StrokeGeometryBuilder(
       cap: StrokeCapType.round,
@@ -175,7 +185,8 @@ class PencilRenderer implements StrokeRenderer {
     // Velocity factor: higher speed -> slightly lighter lead deposition
     final vMin = config.widthProfile.config.velocityMin;
     final vMax = config.widthProfile.config.velocityMax;
-    final normV = (vMax > vMin) ? ((avgV - vMin) / (vMax - vMin)).clamp(0.0, 1.0) : 0.5;
+    final normV =
+        (vMax > vMin) ? ((avgV - vMin) / (vMax - vMin)).clamp(0.0, 1.0) : 0.5;
     final vDelta = (0.5 - normV) * config.velocityOpacityInfluence;
 
     // Pressure factor: firm press drives rich graphite into paper; light press skips peaks
@@ -240,7 +251,8 @@ class PencilRenderer implements StrokeRenderer {
 
     // 2. Soft graphite undertone (ensures firm pressure darkens into the valleys)
     if (config.underwashAlphaRatio > 0.0) {
-      final underAlpha = (effectiveOpacity * config.underwashAlphaRatio).clamp(0.0, 1.0);
+      final underAlpha =
+          (effectiveOpacity * config.underwashAlphaRatio).clamp(0.0, 1.0);
       final underPaint = Paint()
         ..color = stroke.color.withValues(alpha: underAlpha)
         ..style = PaintingStyle.fill
@@ -250,7 +262,8 @@ class PencilRenderer implements StrokeRenderer {
 
     // 3. Pass 1: Soft Graphite Halo / Lead Dust Bloom
     if (config.enableGraphiteHalo && config.graphiteHaloWidth > 0.0) {
-      final haloAlpha = (effectiveOpacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
+      final haloAlpha =
+          (effectiveOpacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
       final haloPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = config.graphiteHaloWidth
@@ -313,7 +326,8 @@ class PencilRenderer implements StrokeRenderer {
 
     // Halo bloom for dot
     if (config.enableGraphiteHalo && config.graphiteHaloWidth > 0.0) {
-      final haloAlpha = (opacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
+      final haloAlpha =
+          (opacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
       final haloPaint = Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = config.graphiteHaloWidth
@@ -329,7 +343,8 @@ class PencilRenderer implements StrokeRenderer {
       } else {
         haloPaint.color = stroke.color.withValues(alpha: haloAlpha);
       }
-      canvas.drawCircle(point.position, radius + config.graphiteHaloWidth * 0.5, haloPaint);
+      canvas.drawCircle(
+          point.position, radius + config.graphiteHaloWidth * 0.5, haloPaint);
     }
 
     // Core lead dot with paper tooth
@@ -349,5 +364,4 @@ class PencilRenderer implements StrokeRenderer {
     }
     canvas.drawCircle(point.position, radius, corePaint);
   }
-
 }

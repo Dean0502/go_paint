@@ -99,14 +99,19 @@ class StrokeGeometryReport {
   factory StrokeGeometryReport.fromJson(Map<String, dynamic> json) {
     return StrokeGeometryReport(
       maxDeviationPx: (json['maxDeviationPx'] as num?)?.toDouble() ?? 0.0,
-      averageDeviationPx: (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
+      averageDeviationPx:
+          (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
       rmsDeviationPx: (json['rmsDeviationPx'] as num?)?.toDouble() ?? 0.0,
       maxDisplacementPx: (json['maxDisplacementPx'] as num?)?.toDouble() ?? 0.0,
-      averageDisplacementPx: (json['averageDisplacementPx'] as num?)?.toDouble() ?? 0.0,
+      averageDisplacementPx:
+          (json['averageDisplacementPx'] as num?)?.toDouble() ?? 0.0,
       rawPathLength: (json['rawPathLength'] as num?)?.toDouble() ?? 0.0,
-      processedPathLength: (json['processedPathLength'] as num?)?.toDouble() ?? 0.0,
-      totalProcessedDisplacement: (json['totalProcessedDisplacement'] as num?)?.toDouble() ?? 0.0,
-      maxRawToProcessedDeviation: (json['maxRawToProcessedDeviation'] as num?)?.toDouble() ?? 0.0,
+      processedPathLength:
+          (json['processedPathLength'] as num?)?.toDouble() ?? 0.0,
+      totalProcessedDisplacement:
+          (json['totalProcessedDisplacement'] as num?)?.toDouble() ?? 0.0,
+      maxRawToProcessedDeviation:
+          (json['maxRawToProcessedDeviation'] as num?)?.toDouble() ?? 0.0,
       rawBounds: json['rawBounds'] != null
           ? Rect.fromLTWH(
               (json['rawBounds']['left'] as num).toDouble(),
@@ -124,13 +129,16 @@ class StrokeGeometryReport {
             )
           : Rect.zero,
       corner: json['corner'] != null
-          ? CornerAnalysisResult.fromJson(json['corner'] as Map<String, dynamic>)
+          ? CornerAnalysisResult.fromJson(
+              json['corner'] as Map<String, dynamic>)
           : const CornerAnalysisResult(detected: false),
       straightLine: json['straightLine'] != null
-          ? StraightLineAnalysisResult.fromJson(json['straightLine'] as Map<String, dynamic>)
+          ? StraightLineAnalysisResult.fromJson(
+              json['straightLine'] as Map<String, dynamic>)
           : null,
       circle: json['circle'] != null
-          ? CircleAnalysisResult.fromJson(json['circle'] as Map<String, dynamic>)
+          ? CircleAnalysisResult.fromJson(
+              json['circle'] as Map<String, dynamic>)
           : null,
     );
   }
@@ -179,11 +187,16 @@ class CornerAnalysisResult {
     }
     return {
       'detected': true,
-      if (rawApex != null) 'rawApex': {'x': _round(rawApex!.dx), 'y': _round(rawApex!.dy)},
+      if (rawApex != null)
+        'rawApex': {'x': _round(rawApex!.dx), 'y': _round(rawApex!.dy)},
       if (processedApex != null)
-        'processedApex': {'x': _round(processedApex!.dx), 'y': _round(processedApex!.dy)},
+        'processedApex': {
+          'x': _round(processedApex!.dx),
+          'y': _round(processedApex!.dy)
+        },
       if (apexDeviationPx != null) 'apexDeviationPx': _round(apexDeviationPx!),
-      if (maxCornerDeviationPx != null) 'maxCornerDeviationPx': _round(maxCornerDeviationPx!),
+      if (maxCornerDeviationPx != null)
+        'maxCornerDeviationPx': _round(maxCornerDeviationPx!),
       if (incomingDirection != null)
         'incomingDirection': {
           'dx': _round(incomingDirection!.dx, 3),
@@ -194,7 +207,8 @@ class CornerAnalysisResult {
           'dx': _round(outgoingDirection!.dx, 3),
           'dy': _round(outgoingDirection!.dy, 3),
         },
-      if (detectedAngleDeg != null) 'detectedAngleDeg': _round(detectedAngleDeg!, 1),
+      if (detectedAngleDeg != null)
+        'detectedAngleDeg': _round(detectedAngleDeg!, 1),
     };
   }
 
@@ -285,10 +299,13 @@ class StraightLineAnalysisResult {
   factory StraightLineAnalysisResult.fromJson(Map<String, dynamic> json) {
     return StraightLineAnalysisResult(
       maxDeviationPx: (json['maxDeviationPx'] as num?)?.toDouble() ?? 0.0,
-      averageDeviationPx: (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
+      averageDeviationPx:
+          (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
       rmsDeviationPx: (json['rmsDeviationPx'] as num?)?.toDouble() ?? 0.0,
-      processedMaxDeviationPx: (json['processedMaxDeviationPx'] as num?)?.toDouble() ?? 0.0,
-      processedAvgDeviationPx: (json['processedAvgDeviationPx'] as num?)?.toDouble() ?? 0.0,
+      processedMaxDeviationPx:
+          (json['processedMaxDeviationPx'] as num?)?.toDouble() ?? 0.0,
+      processedAvgDeviationPx:
+          (json['processedAvgDeviationPx'] as num?)?.toDouble() ?? 0.0,
       lineAngleDeg: (json['lineAngleDeg'] as num?)?.toDouble() ?? 0.0,
     );
   }
@@ -329,7 +346,10 @@ class CircleAnalysisResult {
 
   Map<String, dynamic> toJson() {
     return {
-      'fittedCenter': {'x': _round(fittedCenter.dx), 'y': _round(fittedCenter.dy)},
+      'fittedCenter': {
+        'x': _round(fittedCenter.dx),
+        'y': _round(fittedCenter.dy)
+      },
       'fittedRadius': _round(fittedRadius),
       'radiusVariation': _round(radiusVariation),
       'maxRadialErrorPx': _round(maxRadialErrorPx),
@@ -353,9 +373,12 @@ class CircleAnalysisResult {
       fittedRadius: (json['fittedRadius'] as num?)?.toDouble() ?? 0.0,
       radiusVariation: (json['radiusVariation'] as num?)?.toDouble() ?? 0.0,
       maxRadialErrorPx: (json['maxRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
-      averageRadialErrorPx: (json['averageRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
-      processedMaxRadialErrorPx: (json['processedMaxRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
-      processedAvgRadialErrorPx: (json['processedAvgRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
+      averageRadialErrorPx:
+          (json['averageRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
+      processedMaxRadialErrorPx:
+          (json['processedMaxRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
+      processedAvgRadialErrorPx:
+          (json['processedAvgRadialErrorPx'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
@@ -479,23 +502,27 @@ class StrokeGeometryAnalyzer {
   }
 
   /// Calculates orthogonal projection of point [p] onto segment [a] - [b].
-  static PointPolylineProjection projectPointToSegment(Offset p, Offset a, Offset b) {
+  static PointPolylineProjection projectPointToSegment(
+      Offset p, Offset a, Offset b) {
     final dx = b.dx - a.dx;
     final dy = b.dy - a.dy;
     final lenSq = dx * dx + dy * dy;
     if (lenSq < 1e-6) {
       return PointPolylineProjection((p - a).distance, a);
     }
-    final t = math.max(0.0, math.min(1.0, ((p.dx - a.dx) * dx + (p.dy - a.dy) * dy) / lenSq));
+    final t = math.max(
+        0.0, math.min(1.0, ((p.dx - a.dx) * dx + (p.dy - a.dy) * dy) / lenSq));
     final proj = Offset(a.dx + t * dx, a.dy + t * dy);
     return PointPolylineProjection((p - proj).distance, proj);
   }
 
   /// Finds minimum orthogonal distance and closest point on a polyline from point [p].
-  static PointPolylineProjection projectPointToPolyline(Offset p, List<Offset> polyline) {
+  static PointPolylineProjection projectPointToPolyline(
+      Offset p, List<Offset> polyline) {
     if (polyline.isEmpty) return PointPolylineProjection(0.0, p);
     if (polyline.length == 1) {
-      return PointPolylineProjection((p - polyline.first).distance, polyline.first);
+      return PointPolylineProjection(
+          (p - polyline.first).distance, polyline.first);
     }
 
     double minDist = double.infinity;
@@ -687,7 +714,8 @@ class StrokeGeometryAnalyzer {
       procSumDist += d;
       if (d > procMaxDist) procMaxDist = d;
     }
-    final procAvgDist = processed.isNotEmpty ? procSumDist / processed.length : 0.0;
+    final procAvgDist =
+        processed.isNotEmpty ? procSumDist / processed.length : 0.0;
 
     var angleDeg = phi * 180.0 / math.pi;
     if (angleDeg < 0.0) angleDeg += 180.0;
@@ -757,7 +785,13 @@ class StrokeGeometryAnalyzer {
     final yc = (a11 * b2 - a21 * b1) / det;
 
     // Radius
-    final rSq = (sumX2 - 2.0 * xc * sumX + n * xc * xc + sumY2 - 2.0 * yc * sumY + n * yc * yc) / n;
+    final rSq = (sumX2 -
+            2.0 * xc * sumX +
+            n * xc * xc +
+            sumY2 -
+            2.0 * yc * sumY +
+            n * yc * yc) /
+        n;
     if (rSq <= 0.0) return null;
     final radius = math.sqrt(rSq);
 

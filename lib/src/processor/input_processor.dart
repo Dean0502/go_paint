@@ -23,7 +23,8 @@ class InputProcessor {
   final AdaptiveSmoother adaptiveSmoother;
   final CornerPreserver cornerPreserver;
   final Predictor predictor;
-  final StrokeBenchmarkCollector _benchmarkCollector = StrokeBenchmarkCollector();
+  final StrokeBenchmarkCollector _benchmarkCollector =
+      StrokeBenchmarkCollector();
 
   final List<PointerSample> _rawSamples = [];
   final List<StrokePoint> _processedPoints = [];
@@ -41,11 +42,14 @@ class InputProcessor {
     KinematicsTracker? kinematics,
     PressureSource? pressureSource,
   })  : config = config ?? const StabilizerConfig(),
-        noiseFilter = noiseFilter ?? NoiseFilter(minDistance: config?.minDistance ?? 1.5),
+        noiseFilter =
+            noiseFilter ?? NoiseFilter(minDistance: config?.minDistance ?? 1.5),
         kinematics = kinematics ?? KinematicsTracker(),
         pressureSource = pressureSource ?? const AdaptivePressureSource(),
-        adaptiveSmoother = AdaptiveSmoother(config: config ?? const StabilizerConfig()),
-        cornerPreserver = CornerPreserver(config: config ?? const StabilizerConfig()),
+        adaptiveSmoother =
+            AdaptiveSmoother(config: config ?? const StabilizerConfig()),
+        cornerPreserver =
+            CornerPreserver(config: config ?? const StabilizerConfig()),
         predictor = Predictor(config: config ?? const StabilizerConfig());
 
   List<StrokePoint> get processedPoints => List.unmodifiable(_processedPoints);
@@ -63,7 +67,8 @@ class InputProcessor {
   }
 
   /// Processes an incoming [PointerSample] and returns newly produced [StrokePoint]s.
-  List<StrokePoint> processSample(PointerSample sample, {double baseWidth = 4.0}) {
+  List<StrokePoint> processSample(PointerSample sample,
+      {double baseWidth = 4.0}) {
     _rawHardwarePoints.add(sample.position);
     _lastDeviceKind = sample.deviceType;
     _benchmarkCollector.recordRawSample(sample.position, sample.timestamp);
@@ -80,7 +85,8 @@ class InputProcessor {
     }
 
     // 3. Corner detection: check if sharp direction change should reduce smoothing
-    final cornerOverride = cornerPreserver.checkDirectionChange(sample.position);
+    final cornerOverride =
+        cornerPreserver.checkDirectionChange(sample.position);
 
     // 4. Adaptive low-pass streamline smoothing
     final smoothedPos = adaptiveSmoother.smooth(
@@ -97,7 +103,8 @@ class InputProcessor {
       streamline: effectiveStreamline,
     );
     if (cornerOverride != null) {
-      _benchmarkCollector.recordCornerApexDeviation(sample.position, smoothedPos);
+      _benchmarkCollector.recordCornerApexDeviation(
+          sample.position, smoothedPos);
     }
 
     // 5. Pressure resolution
@@ -129,7 +136,8 @@ class InputProcessor {
 
     if (n == 2) {
       final pPrev = _rawSamples[0].position;
-      final mid = Offset((pPrev.dx + smoothedPos.dx) * 0.5, (pPrev.dy + smoothedPos.dy) * 0.5);
+      final mid = Offset(
+          (pPrev.dx + smoothedPos.dx) * 0.5, (pPrev.dy + smoothedPos.dy) * 0.5);
 
       final pMid = StrokePoint(
         position: mid,
@@ -181,7 +189,8 @@ class InputProcessor {
 
     // Midpoint smoothing
     final pPrev = _rawSamples[n - 2].position;
-    final mid = Offset((pPrev.dx + smoothedPos.dx) * 0.5, (pPrev.dy + smoothedPos.dy) * 0.5);
+    final mid = Offset(
+        (pPrev.dx + smoothedPos.dx) * 0.5, (pPrev.dy + smoothedPos.dy) * 0.5);
 
     final midPoint = StrokePoint(
       position: mid,
@@ -236,7 +245,8 @@ class InputProcessor {
   }) {
     final rep = _benchmarkCollector.finalizeReport(
       testMode: testMode,
-      processedPositions: _processedPoints.map((p) => p.position).toList(growable: false),
+      processedPositions:
+          _processedPoints.map((p) => p.position).toList(growable: false),
       config: config,
       platform: platform,
       androidVersion: androidVersion,
@@ -254,7 +264,8 @@ class InputProcessor {
   StrokeDiagnostics getDiagnostics({int activePointerCount = 1}) {
     return StrokeDiagnostics(
       rawPoints: List.unmodifiable(_rawHardwarePoints),
-      stabilizedPoints: _processedPoints.map((p) => p.position).toList(growable: false),
+      stabilizedPoints:
+          _processedPoints.map((p) => p.position).toList(growable: false),
       catmullPoints: List.unmodifiable(_catmullPoints),
       predictedTip: _lastPredictedTip,
       currentVelocity: kinematics.smoothedVelocity,

@@ -4,7 +4,8 @@ import 'package:go_paint/go_paint.dart';
 
 void main() {
   group('StrokeBenchmarkReport & Collector Tests', () {
-    test('StrokeBenchmarkReport serializes to JSON matching required schema', () {
+    test('StrokeBenchmarkReport serializes to JSON matching required schema',
+        () {
       const config = StabilizerConfig(
         streamlineSlow: 0.45,
         streamlineFast: 0.08,
@@ -98,7 +99,8 @@ void main() {
       expect(restored.maxPredictionDistance, 18.0);
     });
 
-    test('KidzCanvasController records benchmark report upon stroke completion', () {
+    test('KidzCanvasController records benchmark report upon stroke completion',
+        () {
       final controller = KidzCanvasController();
       controller.setBenchmarkContext(
         testMode: 'sharp_corners',
@@ -160,7 +162,9 @@ void main() {
       expect(controller.benchmarkHistory, isEmpty);
     });
 
-    test('Geometric deviation diagnostic correctly measures corner apex and path deviation', () {
+    test(
+        'Geometric deviation diagnostic correctly measures corner apex and path deviation',
+        () {
       final controller = KidzCanvasController();
       controller.setBenchmarkContext(
         testMode: 'sharp_corners',
@@ -203,10 +207,13 @@ void main() {
       // Verify corner apex deviation is detected and non-zero
       expect(report!.cornerDeviationPx, greaterThan(0.0));
       expect(report.averageDeviationPx, greaterThan(0.0));
-      expect(report.maxDeviationPx, greaterThanOrEqualTo(report.averageDeviationPx));
+      expect(report.maxDeviationPx,
+          greaterThanOrEqualTo(report.averageDeviationPx));
     });
 
-    test('Straight line stroke reports zero corner deviation but records path metrics', () {
+    test(
+        'Straight line stroke reports zero corner deviation but records path metrics',
+        () {
       final controller = KidzCanvasController();
       controller.setBenchmarkContext(
         testMode: 'long_straight_line',

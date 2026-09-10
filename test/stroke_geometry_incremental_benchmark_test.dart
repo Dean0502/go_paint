@@ -26,7 +26,9 @@ void main() {
     const testScales = [10, 100, 500, 1000, 2000, 5000, 10000];
 
     for (final count in testScales) {
-      test('Benchmark scale: $count centerline points (Full Rebuild vs Incremental Delta)', () {
+      test(
+          'Benchmark scale: $count centerline points (Full Rebuild vs Incremental Delta)',
+          () {
         final points = generateCenterline(count);
         const builder = StrokeGeometryBuilder(
           widthProfile: DynamicWidthProfile(StrokeWidthConfig(
@@ -48,7 +50,8 @@ void main() {
           fullOutline = builder.buildFromPoints(points);
         }
         swFull.stop();
-        final fullRebuildMs = swFull.elapsedMicroseconds / (iterations * 1000.0);
+        final fullRebuildMs =
+            swFull.elapsedMicroseconds / (iterations * 1000.0);
 
         // 2. INCREMENTAL DELTA MEASUREMENT at step N
         // Measures calculating only the delta geometry for the latest arriving sample
@@ -95,18 +98,22 @@ void main() {
         // ignore: avoid_print
         print('  Contour Vertices:         ${fullOutline!.contour.length}');
         // ignore: avoid_print
-        print('  Full Rebuild Time:        ${fullRebuildMs.toStringAsFixed(3)} ms');
+        print(
+            '  Full Rebuild Time:        ${fullRebuildMs.toStringAsFixed(3)} ms');
         // ignore: avoid_print
-        print('  Incremental Delta Time:   ${incUpdateMs.toStringAsFixed(4)} ms (${incUpdateUs.toStringAsFixed(1)} µs)');
+        print(
+            '  Incremental Delta Time:   ${incUpdateMs.toStringAsFixed(4)} ms (${incUpdateUs.toStringAsFixed(1)} µs)');
         // ignore: avoid_print
-        print('  Speedup (Rebuild/Delta):  ${(fullRebuildMs / math.max(0.0001, incUpdateMs)).toStringAsFixed(1)}x');
+        print(
+            '  Speedup (Rebuild/Delta):  ${(fullRebuildMs / math.max(0.0001, incUpdateMs)).toStringAsFixed(1)}x');
         // ignore: avoid_print
         print('  Exceeds 120Hz (8.33ms):   $exceeds120Hz');
         // ignore: avoid_print
         print('  Exceeds 60Hz  (16.67ms):  $exceeds60Hz');
 
         expect(fullOutline.isNotEmpty, isTrue);
-        expect(incUpdateMs, lessThan(0.5)); // Incremental step is always sub-millisecond O(1)
+        expect(incUpdateMs,
+            lessThan(0.5)); // Incremental step is always sub-millisecond O(1)
       });
     }
   });

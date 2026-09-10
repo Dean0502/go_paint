@@ -30,7 +30,8 @@ void main() {
       expect(end.dy, closeTo(p2.dy, 0.01));
     });
 
-    test('interpolateSegment produces correct step count within convex hull', () {
+    test('interpolateSegment produces correct step count within convex hull',
+        () {
       const p0 = Offset(0, 0);
       const p1 = Offset(10, 0);
       const p2 = Offset(20, 10);

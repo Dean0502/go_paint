@@ -135,13 +135,16 @@ class StrokeBenchmarkReport {
       'averageVelocity': double.parse(averageVelocity.toStringAsFixed(1)),
       'maxVelocity': double.parse(maxVelocity.toStringAsFixed(1)),
       'averageDeltaMs': double.parse(averageDeltaMs.toStringAsFixed(2)),
-      'estimatedProcessingLatencyMs': double.parse(estimatedProcessingLatencyMs.toStringAsFixed(2)),
+      'estimatedProcessingLatencyMs':
+          double.parse(estimatedProcessingLatencyMs.toStringAsFixed(2)),
       'smoothingAmount': double.parse(smoothingAmount.toStringAsFixed(3)),
       if (cornerDeviationPx != null)
-        'cornerDeviationPx': double.parse(cornerDeviationPx!.toStringAsFixed(2)),
+        'cornerDeviationPx':
+            double.parse(cornerDeviationPx!.toStringAsFixed(2)),
       'averageDeviationPx': double.parse(averageDeviationPx.toStringAsFixed(2)),
       'maxDeviationPx': double.parse(maxDeviationPx.toStringAsFixed(2)),
-      'predictionDistancePx': double.parse(predictionDistancePx.toStringAsFixed(2)),
+      'predictionDistancePx':
+          double.parse(predictionDistancePx.toStringAsFixed(2)),
       'prediction': prediction,
       'config': config.toJson(),
       if (geometry != null) 'geometry': geometry!.toJson(),
@@ -165,20 +168,24 @@ class StrokeBenchmarkReport {
       averageVelocity: (json['averageVelocity'] as num?)?.toDouble() ?? 0.0,
       maxVelocity: (json['maxVelocity'] as num?)?.toDouble() ?? 0.0,
       averageDeltaMs: (json['averageDeltaMs'] as num?)?.toDouble() ?? 0.0,
-      estimatedProcessingLatencyMs: (json['estimatedProcessingLatencyMs'] as num?)?.toDouble() ??
-          (json['latencyEstimateMs'] as num?)?.toDouble() ??
-          0.0,
+      estimatedProcessingLatencyMs:
+          (json['estimatedProcessingLatencyMs'] as num?)?.toDouble() ??
+              (json['latencyEstimateMs'] as num?)?.toDouble() ??
+              0.0,
       smoothingAmount: (json['smoothingAmount'] as num?)?.toDouble() ?? 0.0,
       cornerDeviationPx: (json['cornerDeviationPx'] as num?)?.toDouble(),
-      averageDeviationPx: (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
+      averageDeviationPx:
+          (json['averageDeviationPx'] as num?)?.toDouble() ?? 0.0,
       maxDeviationPx: (json['maxDeviationPx'] as num?)?.toDouble() ?? 0.0,
-      predictionDistancePx: (json['predictionDistancePx'] as num?)?.toDouble() ?? 0.0,
+      predictionDistancePx:
+          (json['predictionDistancePx'] as num?)?.toDouble() ?? 0.0,
       prediction: json['prediction'] as bool? ?? false,
       config: json['config'] != null
           ? StabilizerConfig.fromJson(json['config'] as Map<String, dynamic>)
           : const StabilizerConfig(),
       geometry: json['geometry'] != null
-          ? StrokeGeometryReport.fromJson(json['geometry'] as Map<String, dynamic>)
+          ? StrokeGeometryReport.fromJson(
+              json['geometry'] as Map<String, dynamic>)
           : null,
       timestamp: json['timestamp'] != null
           ? DateTime.parse(json['timestamp'] as String)
@@ -231,7 +238,8 @@ class StrokeBenchmarkCollector {
   }
 
   /// Records instantaneous smoothed velocity and applied streamline factor.
-  void recordKinematics({required double velocity, required double streamline}) {
+  void recordKinematics(
+      {required double velocity, required double streamline}) {
     _velocities.add(velocity);
     _streamlineFactors.add(streamline);
     if (velocity > _maxVelocity) {
@@ -272,7 +280,9 @@ class StrokeBenchmarkCollector {
     // Average delta time
     final avgDeltaMs = _deltaMsList.isNotEmpty
         ? _deltaMsList.reduce((a, b) => a + b) / _deltaMsList.length
-        : (refreshRate != null && refreshRate > 0 ? 1000.0 / refreshRate : 16.67);
+        : (refreshRate != null && refreshRate > 0
+            ? 1000.0 / refreshRate
+            : 16.67);
 
     // Velocities
     final avgVelocity = _velocities.isNotEmpty
@@ -291,8 +301,10 @@ class StrokeBenchmarkCollector {
     final filterDelayMs = avgSmoothing < 0.98
         ? avgDeltaMs * (avgSmoothing / math.max(0.02, 1.0 - avgSmoothing))
         : avgDeltaMs * 5.0;
-    final predHorizon = config.predictionEnabled ? config.predictionHorizonMs : 0.0;
-    final latencyEstimate = math.max(0.0, avgDeltaMs + filterDelayMs - predHorizon);
+    final predHorizon =
+        config.predictionEnabled ? config.predictionHorizonMs : 0.0;
+    final latencyEstimate =
+        math.max(0.0, avgDeltaMs + filterDelayMs - predHorizon);
 
     // Comprehensive geometric deviation analysis:
     // Compares raw hardware path against processed/stabilized stroke
@@ -306,7 +318,9 @@ class StrokeBenchmarkCollector {
     // If no corner was detected, report null rather than fabricating 0.0.
     final double? finalCornerDev = geometry.corner.detected
         ? geometry.corner.apexDeviationPx
-        : (_cornerDeviations.isNotEmpty ? _cornerDeviations.reduce(math.max) : null);
+        : (_cornerDeviations.isNotEmpty
+            ? _cornerDeviations.reduce(math.max)
+            : null);
 
     // Max prediction distance (px)
     final maxPredDist = _predictionDistances.isNotEmpty

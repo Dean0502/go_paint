@@ -52,9 +52,12 @@ class CrayonConfig {
     this.enableEdgeFringe = true,
     this.edgeFringeWidth = 1.0,
     this.edgeFringeAlphaRatio = 0.25,
-  })  : assert(baseOpacity >= 0.0 && baseOpacity <= 1.0, 'baseOpacity must be in [0, 1]'),
-        assert(edgeVariationAmplitude >= 0.0, 'edgeVariationAmplitude must be non-negative'),
-        assert(edgeVariationWavelength > 0.0, 'edgeVariationWavelength must be positive'),
+  })  : assert(baseOpacity >= 0.0 && baseOpacity <= 1.0,
+            'baseOpacity must be in [0, 1]'),
+        assert(edgeVariationAmplitude >= 0.0,
+            'edgeVariationAmplitude must be non-negative'),
+        assert(edgeVariationWavelength > 0.0,
+            'edgeVariationWavelength must be positive'),
         assert(edgeFringeWidth >= 0.0, 'edgeFringeWidth must be non-negative'),
         assert(edgeFringeAlphaRatio >= 0.0 && edgeFringeAlphaRatio <= 1.0,
             'edgeFringeAlphaRatio must be in [0, 1]');
@@ -74,11 +77,15 @@ class CrayonConfig {
     return CrayonConfig(
       widthProfile: widthProfile ?? this.widthProfile,
       baseOpacity: baseOpacity ?? this.baseOpacity,
-      velocityOpacityInfluence: velocityOpacityInfluence ?? this.velocityOpacityInfluence,
-      pressureOpacityInfluence: pressureOpacityInfluence ?? this.pressureOpacityInfluence,
+      velocityOpacityInfluence:
+          velocityOpacityInfluence ?? this.velocityOpacityInfluence,
+      pressureOpacityInfluence:
+          pressureOpacityInfluence ?? this.pressureOpacityInfluence,
       enableEdgeVariation: enableEdgeVariation ?? this.enableEdgeVariation,
-      edgeVariationAmplitude: edgeVariationAmplitude ?? this.edgeVariationAmplitude,
-      edgeVariationWavelength: edgeVariationWavelength ?? this.edgeVariationWavelength,
+      edgeVariationAmplitude:
+          edgeVariationAmplitude ?? this.edgeVariationAmplitude,
+      edgeVariationWavelength:
+          edgeVariationWavelength ?? this.edgeVariationWavelength,
       enableEdgeFringe: enableEdgeFringe ?? this.enableEdgeFringe,
       edgeFringeWidth: edgeFringeWidth ?? this.edgeFringeWidth,
       edgeFringeAlphaRatio: edgeFringeAlphaRatio ?? this.edgeFringeAlphaRatio,
@@ -119,7 +126,8 @@ class CrayonRenderer implements StrokeRenderer {
       baseWidth: stroke.baseWidth,
       isComplete: stroke.isComplete,
     );
-    final offsets = List<Offset>.generate(filtered.length, (i) => filtered[i].position);
+    final offsets =
+        List<Offset>.generate(filtered.length, (i) => filtered[i].position);
 
     const builder = StrokeGeometryBuilder(
       cap: StrokeCapType.round,
@@ -148,7 +156,8 @@ class CrayonRenderer implements StrokeRenderer {
     // Velocity dwell factor: slow movement deposits more wax; fast movement skips slightly
     final vMin = config.widthProfile.config.velocityMin;
     final vMax = config.widthProfile.config.velocityMax;
-    final normV = (vMax > vMin) ? ((avgV - vMin) / (vMax - vMin)).clamp(0.0, 1.0) : 0.5;
+    final normV =
+        (vMax > vMin) ? ((avgV - vMin) / (vMax - vMin)).clamp(0.0, 1.0) : 0.5;
     final vDelta = (0.5 - normV) * config.velocityOpacityInfluence;
 
     // Pressure factor: firm press drives wax deep into paper valleys
@@ -216,7 +225,8 @@ class CrayonRenderer implements StrokeRenderer {
 
     // 4. Optional subtle edge coverage / tooth fringe pass
     if (config.enableEdgeFringe && config.edgeFringeWidth > 0.0) {
-      final fringeAlpha = (effectiveOpacity * config.edgeFringeAlphaRatio).clamp(0.0, 1.0);
+      final fringeAlpha =
+          (effectiveOpacity * config.edgeFringeAlphaRatio).clamp(0.0, 1.0);
       final fringePaint = Paint()
         ..color = stroke.color.withValues(alpha: fringeAlpha)
         ..style = PaintingStyle.stroke
@@ -242,18 +252,21 @@ class CrayonRenderer implements StrokeRenderer {
 
   void _renderDab(Canvas canvas, Stroke stroke, double opacity) {
     final point = stroke.points.first;
-    final radius = config.widthProfile.computeRadii([point], baseWidth: stroke.baseWidth).first;
+    final radius = config.widthProfile
+        .computeRadii([point], baseWidth: stroke.baseWidth).first;
     if (radius <= 0.0) return;
 
     // Subtle edge fringe
     if (config.enableEdgeFringe && config.edgeFringeWidth > 0.0) {
-      final fringeAlpha = (opacity * config.edgeFringeAlphaRatio).clamp(0.0, 1.0);
+      final fringeAlpha =
+          (opacity * config.edgeFringeAlphaRatio).clamp(0.0, 1.0);
       final fringePaint = Paint()
         ..color = stroke.color.withValues(alpha: fringeAlpha)
         ..style = PaintingStyle.stroke
         ..strokeWidth = config.edgeFringeWidth
         ..isAntiAlias = true;
-      canvas.drawCircle(point.position, radius + config.edgeFringeWidth * 0.5, fringePaint);
+      canvas.drawCircle(
+          point.position, radius + config.edgeFringeWidth * 0.5, fringePaint);
     }
 
     // Dominant core dot

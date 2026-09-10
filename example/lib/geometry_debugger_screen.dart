@@ -11,7 +11,8 @@ class GeometryDebuggerScreen extends StatefulWidget {
   State<GeometryDebuggerScreen> createState() => _GeometryDebuggerScreenState();
 }
 
-class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with SingleTickerProviderStateMixin {
+class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen>
+    with SingleTickerProviderStateMixin {
   // Layer visibility toggles
   bool _outlineAlone = false;
   bool _showFill = true;
@@ -87,7 +88,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
       arcSteps: 8,
     );
 
-    final outline = builder.buildFromPoints(_activePoints, baseWidth: _strokeWidth);
+    final outline =
+        builder.buildFromPoints(_activePoints, baseWidth: _strokeWidth);
     sw.stop();
 
     final genMs = sw.elapsedMicroseconds / 1000.0;
@@ -109,23 +111,36 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
     final pts = <StrokePoint>[];
     switch (shapeKey) {
       case 'single_point_dab':
-        pts.add(const StrokePoint(position: Offset(180, 260), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(180, 260), timestamp: Duration.zero));
         break;
       case 'short_stroke':
-        pts.add(const StrokePoint(position: Offset(180, 260), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(180.8, 260.4), timestamp: Duration(milliseconds: 16)));
+        pts.add(const StrokePoint(
+            position: Offset(180, 260), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(180.8, 260.4),
+            timestamp: Duration(milliseconds: 16)));
         break;
       case 'horizontal_line':
-        pts.add(const StrokePoint(position: Offset(50, 260), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(310, 260), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(50, 260), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(310, 260),
+            timestamp: Duration(milliseconds: 100)));
         break;
       case 'vertical_line':
-        pts.add(const StrokePoint(position: Offset(180, 100), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(180, 420), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(180, 100), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(180, 420),
+            timestamp: Duration(milliseconds: 100)));
         break;
       case 'diagonal_line':
-        pts.add(const StrokePoint(position: Offset(60, 140), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(300, 380), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(60, 140), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(300, 380),
+            timestamp: Duration(milliseconds: 100)));
         break;
       case 'smooth_curve':
         for (int i = 0; i <= 40; i++) {
@@ -151,19 +166,30 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
         }
         break;
       case '90_deg_corner':
-        pts.add(const StrokePoint(position: Offset(60, 160), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(260, 160), timestamp: Duration(milliseconds: 50)));
-        pts.add(const StrokePoint(position: Offset(260, 360), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(60, 160), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(260, 160), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(260, 360),
+            timestamp: Duration(milliseconds: 100)));
         break;
       case 'acute_corner':
-        pts.add(const StrokePoint(position: Offset(60, 140), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(300, 260), timestamp: Duration(milliseconds: 50)));
-        pts.add(const StrokePoint(position: Offset(70, 360), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(60, 140), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(300, 260), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(70, 360), timestamp: Duration(milliseconds: 100)));
         break;
       case 'obtuse_corner':
-        pts.add(const StrokePoint(position: Offset(60, 160), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(200, 260), timestamp: Duration(milliseconds: 50)));
-        pts.add(const StrokePoint(position: Offset(320, 210), timestamp: Duration(milliseconds: 100)));
+        pts.add(const StrokePoint(
+            position: Offset(60, 160), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(200, 260), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(320, 210),
+            timestamp: Duration(milliseconds: 100)));
         break;
       case 'zigzag':
         for (int i = 0; i < 7; i++) {
@@ -186,7 +212,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
           Offset(290, 330),
         ];
         for (int i = 0; i < raw.length; i++) {
-          pts.add(StrokePoint(position: raw[i], timestamp: Duration(milliseconds: i * 15)));
+          pts.add(StrokePoint(
+              position: raw[i], timestamp: Duration(milliseconds: i * 15)));
         }
         break;
       case 'pressure_width_variation':
@@ -204,20 +231,32 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
         _dynamicWidth = true;
         break;
       case 'duplicate_points':
-        pts.add(const StrokePoint(position: Offset(80, 260), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(80, 260), timestamp: Duration(milliseconds: 8)));
-        pts.add(const StrokePoint(position: Offset(80, 260), timestamp: Duration(milliseconds: 16)));
-        pts.add(const StrokePoint(position: Offset(260, 260), timestamp: Duration(milliseconds: 50)));
-        pts.add(const StrokePoint(position: Offset(260, 260), timestamp: Duration(milliseconds: 58)));
+        pts.add(const StrokePoint(
+            position: Offset(80, 260), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(80, 260), timestamp: Duration(milliseconds: 8)));
+        pts.add(const StrokePoint(
+            position: Offset(80, 260), timestamp: Duration(milliseconds: 16)));
+        pts.add(const StrokePoint(
+            position: Offset(260, 260), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(260, 260), timestamp: Duration(milliseconds: 58)));
         break;
       case 'extremely_close_points':
-        pts.add(const StrokePoint(position: Offset(80.0, 260.0), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(80.00003, 260.00002), timestamp: Duration(milliseconds: 8)));
-        pts.add(const StrokePoint(position: Offset(260.0, 260.0), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(80.0, 260.0), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(80.00003, 260.00002),
+            timestamp: Duration(milliseconds: 8)));
+        pts.add(const StrokePoint(
+            position: Offset(260.0, 260.0),
+            timestamp: Duration(milliseconds: 50)));
         break;
       case 'zero_width_stroke':
-        pts.add(const StrokePoint(position: Offset(60, 200), timestamp: Duration.zero));
-        pts.add(const StrokePoint(position: Offset(280, 280), timestamp: Duration(milliseconds: 50)));
+        pts.add(const StrokePoint(
+            position: Offset(60, 200), timestamp: Duration.zero));
+        pts.add(const StrokePoint(
+            position: Offset(280, 280), timestamp: Duration(milliseconds: 50)));
         _strokeWidth = 0.0;
         break;
     }
@@ -246,7 +285,9 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
       _stressPointCount++;
       _stressAngle += 0.08;
       _stressRadius = 20.0 + (_stressPointCount * 0.18);
-      if (_stressRadius > 160.0) _stressRadius = 20.0 + ((_stressPointCount % 800) * 0.18);
+      if (_stressRadius > 160.0) {
+        _stressRadius = 20.0 + ((_stressPointCount % 800) * 0.18);
+      }
 
       final x = _stressCenter.dx + _stressRadius * math.cos(_stressAngle);
       final y = _stressCenter.dy + _stressRadius * math.sin(_stressAngle * 0.7);
@@ -327,7 +368,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
         backgroundColor: const Color(0xFF1E293B),
         title: const Text(
           'Stroke Geometry Debugger (v0.4.1)',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
         ),
         actions: [
           IconButton(
@@ -335,7 +377,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               _outlineAlone ? Icons.visibility_off : Icons.visibility,
               color: _outlineAlone ? Colors.amber : Colors.white70,
             ),
-            tooltip: _outlineAlone ? 'Show All Debug Layers' : 'View Outline Alone',
+            tooltip:
+                _outlineAlone ? 'Show All Debug Layers' : 'View Outline Alone',
             onPressed: () {
               setState(() {
                 _outlineAlone = !_outlineAlone;
@@ -453,7 +496,9 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF38BDF8) : const Color(0xFF334155),
+                color: isSelected
+                    ? const Color(0xFF38BDF8)
+                    : const Color(0xFF334155),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Center(
@@ -490,12 +535,18 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
             children: [
               Text(
                 'Centerline: ${_activePoints.length} pts',
-                style: const TextStyle(fontSize: 11, color: Colors.cyanAccent, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.cyanAccent,
+                    fontWeight: FontWeight.bold),
               ),
               const SizedBox(width: 10),
               Text(
                 'Contour: ${_activeOutline?.contour.length ?? 0} vertices',
-                style: const TextStyle(fontSize: 11, color: Colors.amberAccent, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    fontSize: 11,
+                    color: Colors.amberAccent,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -510,20 +561,26 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
                   fontWeight: FontWeight.bold,
                   color: _lastGenTimeMs > 16.67
                       ? Colors.redAccent
-                      : (_lastGenTimeMs > 8.33 ? Colors.orangeAccent : Colors.greenAccent),
+                      : (_lastGenTimeMs > 8.33
+                          ? Colors.orangeAccent
+                          : Colors.greenAccent),
                 ),
               ),
               const SizedBox(width: 8),
               if (_lastGenTimeMs > 8.33)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                   decoration: BoxDecoration(
                     color: _lastGenTimeMs > 16.67 ? Colors.red : Colors.orange,
                     borderRadius: BorderRadius.circular(3),
                   ),
                   child: Text(
                     _lastGenTimeMs > 16.67 ? '> 60Hz' : '> 120Hz',
-                    style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
             ],
@@ -536,7 +593,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               const SizedBox(width: 4),
               _buildStatusBadge('Closed', hasOutline),
               const SizedBox(width: 4),
-              _buildStatusBadge('Bounds', hasOutline && _activeOutline!.bounds.isFinite),
+              _buildStatusBadge(
+                  'Bounds', hasOutline && _activeOutline!.bounds.isFinite),
             ],
           ),
         ],
@@ -553,7 +611,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
       ),
       child: Text(
         '$label: ${ok ? "✓" : "✗"}',
-        style: const TextStyle(fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold),
+        style: const TextStyle(
+            fontSize: 9, color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -577,16 +636,20 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
             children: [
               ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _isStressTesting ? Colors.redAccent : Colors.blueAccent,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  backgroundColor:
+                      _isStressTesting ? Colors.redAccent : Colors.blueAccent,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   minimumSize: const Size(0, 28),
                 ),
-                icon: Icon(_isStressTesting ? Icons.stop : Icons.play_arrow, size: 14, color: Colors.white),
+                icon: Icon(_isStressTesting ? Icons.stop : Icons.play_arrow,
+                    size: 14, color: Colors.white),
                 label: Text(
                   _isStressTesting ? 'Stop Stress Test' : 'Live Stress Test',
                   style: const TextStyle(fontSize: 10, color: Colors.white),
                 ),
-                onPressed: _isStressTesting ? _stopStressTest : _startStressTest,
+                onPressed:
+                    _isStressTesting ? _stopStressTest : _startStressTest,
               ),
             ],
           ),
@@ -596,7 +659,9 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               '> 8.3ms (120Hz): $_breach120HzCount',
               style: TextStyle(
                 fontSize: 10,
-                color: _breach120HzCount > 0 ? Colors.orangeAccent : Colors.white70,
+                color: _breach120HzCount > 0
+                    ? Colors.orangeAccent
+                    : Colors.white70,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -626,14 +691,22 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _buildToggleChip('Outline Alone', _outlineAlone, (v) => setState(() => _outlineAlone = v)),
-                _buildToggleChip('Fill', _showFill, (v) => setState(() => _showFill = v)),
-                _buildToggleChip('Border', _showOutlineBorder, (v) => setState(() => _showOutlineBorder = v)),
-                _buildToggleChip('Left Boundary', _showLeftBoundary, (v) => setState(() => _showLeftBoundary = v)),
-                _buildToggleChip('Right Boundary', _showRightBoundary, (v) => setState(() => _showRightBoundary = v)),
-                _buildToggleChip('Centerline', _showCenterline, (v) => setState(() => _showCenterline = v)),
-                _buildToggleChip('Vertices', _showVertices, (v) => setState(() => _showVertices = v)),
-                _buildToggleChip('Bounds', _showBounds, (v) => setState(() => _showBounds = v)),
+                _buildToggleChip('Outline Alone', _outlineAlone,
+                    (v) => setState(() => _outlineAlone = v)),
+                _buildToggleChip(
+                    'Fill', _showFill, (v) => setState(() => _showFill = v)),
+                _buildToggleChip('Border', _showOutlineBorder,
+                    (v) => setState(() => _showOutlineBorder = v)),
+                _buildToggleChip('Left Boundary', _showLeftBoundary,
+                    (v) => setState(() => _showLeftBoundary = v)),
+                _buildToggleChip('Right Boundary', _showRightBoundary,
+                    (v) => setState(() => _showRightBoundary = v)),
+                _buildToggleChip('Centerline', _showCenterline,
+                    (v) => setState(() => _showCenterline = v)),
+                _buildToggleChip('Vertices', _showVertices,
+                    (v) => setState(() => _showVertices = v)),
+                _buildToggleChip('Bounds', _showBounds,
+                    (v) => setState(() => _showBounds = v)),
               ],
             ),
           ),
@@ -642,7 +715,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
           Row(
             children: [
               // Cap
-              const Text('Cap: ', style: TextStyle(fontSize: 11, color: Colors.white70)),
+              const Text('Cap: ',
+                  style: TextStyle(fontSize: 11, color: Colors.white70)),
               DropdownButton<StrokeCapType>(
                 value: _cap,
                 dropdownColor: const Color(0xFF334155),
@@ -660,7 +734,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               ),
               const SizedBox(width: 10),
               // Join
-              const Text('Join: ', style: TextStyle(fontSize: 11, color: Colors.white70)),
+              const Text('Join: ',
+                  style: TextStyle(fontSize: 11, color: Colors.white70)),
               DropdownButton<StrokeJoinType>(
                 value: _join,
                 dropdownColor: const Color(0xFF334155),
@@ -678,7 +753,9 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               ),
               const SizedBox(width: 10),
               if (_join == StrokeJoinType.miter) ...[
-                Text('Miter: ${_miterLimit.toStringAsFixed(1)}', style: const TextStyle(fontSize: 11, color: Colors.white70)),
+                Text('Miter: ${_miterLimit.toStringAsFixed(1)}',
+                    style:
+                        const TextStyle(fontSize: 11, color: Colors.white70)),
                 SizedBox(
                   width: 80,
                   child: Slider(
@@ -701,7 +778,8 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
               }),
               const Spacer(),
               // Width slider
-              Text('W: ${_strokeWidth.toInt()}px', style: const TextStyle(fontSize: 11, color: Colors.white70)),
+              Text('W: ${_strokeWidth.toInt()}px',
+                  style: const TextStyle(fontSize: 11, color: Colors.white70)),
               Expanded(
                 child: Slider(
                   value: _strokeWidth,
@@ -721,11 +799,14 @@ class _GeometryDebuggerScreenState extends State<GeometryDebuggerScreen> with Si
     );
   }
 
-  Widget _buildToggleChip(String label, bool value, ValueChanged<bool> onChanged) {
+  Widget _buildToggleChip(
+      String label, bool value, ValueChanged<bool> onChanged) {
     return Padding(
       padding: const EdgeInsets.only(right: 6),
       child: FilterChip(
-        label: Text(label, style: TextStyle(fontSize: 10, color: value ? Colors.black : Colors.white70)),
+        label: Text(label,
+            style: TextStyle(
+                fontSize: 10, color: value ? Colors.black : Colors.white70)),
         selected: value,
         selectedColor: const Color(0xFF38BDF8),
         backgroundColor: const Color(0xFF334155),
@@ -825,7 +906,8 @@ class _GeometryDebugCanvasPainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.5
         ..isAntiAlias = true;
-      _drawPolyline(canvas, activePoints.map((p) => p.position).toList(), centerPaint);
+      _drawPolyline(
+          canvas, activePoints.map((p) => p.position).toList(), centerPaint);
     }
 
     // 6. Control Points & Boundary Vertices

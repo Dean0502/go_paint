@@ -48,14 +48,14 @@ void main() {
         position: Offset(10, 10),
         timestamp: Duration.zero,
         velocity: 550.0, // Mid-range velocity
-        pressure: 0.0,   // Lightest touch
+        pressure: 0.0, // Lightest touch
       );
 
       const firmPt = StrokePoint(
         position: Offset(20, 20),
         timestamp: Duration(milliseconds: 10),
         velocity: 550.0, // Mid-range velocity
-        pressure: 1.0,   // Firmest press
+        pressure: 1.0, // Firmest press
       );
 
       final wLight = profile.computeRawWidth(lightPt, 3.0);
@@ -113,16 +113,36 @@ void main() {
       expect(radii.last, closeTo(radii[radii.length - 5] * 0.65, 0.20));
     });
 
-    test('Width transitions between adjacent points are smoothed without abrupt spikes', () {
+    test(
+        'Width transitions between adjacent points are smoothed without abrupt spikes',
+        () {
       // Simulate a sudden single-sample velocity spike (e.g. from 200 to 900 and back to 200)
       const points = [
-        StrokePoint(position: Offset(0, 0), timestamp: Duration.zero, velocity: 200.0, pressure: 0.5),
-        StrokePoint(position: Offset(10, 0), timestamp: Duration(milliseconds: 10), velocity: 200.0, pressure: 0.5),
-        StrokePoint(position: Offset(20, 0), timestamp: Duration(milliseconds: 20), velocity: 950.0, pressure: 0.5), // Sudden jump
-        StrokePoint(position: Offset(30, 0), timestamp: Duration(milliseconds: 30), velocity: 200.0, pressure: 0.5),
+        StrokePoint(
+            position: Offset(0, 0),
+            timestamp: Duration.zero,
+            velocity: 200.0,
+            pressure: 0.5),
+        StrokePoint(
+            position: Offset(10, 0),
+            timestamp: Duration(milliseconds: 10),
+            velocity: 200.0,
+            pressure: 0.5),
+        StrokePoint(
+            position: Offset(20, 0),
+            timestamp: Duration(milliseconds: 20),
+            velocity: 950.0,
+            pressure: 0.5), // Sudden jump
+        StrokePoint(
+            position: Offset(30, 0),
+            timestamp: Duration(milliseconds: 30),
+            velocity: 200.0,
+            pressure: 0.5),
       ];
 
-      final rawJump = (profile.computeRawWidth(points[2], 4.0) - profile.computeRawWidth(points[1], 4.0)).abs();
+      final rawJump = (profile.computeRawWidth(points[2], 4.0) -
+              profile.computeRawWidth(points[1], 4.0))
+          .abs();
       final radii = profile.computeRadii(points, baseWidth: 4.0);
       final smoothedJump = (radii[2] * 2.0 - radii[1] * 2.0).abs();
 
@@ -145,7 +165,8 @@ void main() {
     test('Zero-width stroke returns 0.0 radii without errors', () {
       const points = [
         StrokePoint(position: Offset(0, 0), timestamp: Duration.zero),
-        StrokePoint(position: Offset(10, 10), timestamp: Duration(milliseconds: 10)),
+        StrokePoint(
+            position: Offset(10, 10), timestamp: Duration(milliseconds: 10)),
       ];
 
       final radii = profile.computeRadii(points, baseWidth: 0.0);
@@ -154,7 +175,8 @@ void main() {
   });
 
   group('PencilRenderer Tests', () {
-    test('computeOpacity produces stable values clamped within [0.25, 0.95]', () {
+    test('computeOpacity produces stable values clamped within [0.25, 0.95]',
+        () {
       final renderer = PencilRenderer(const PencilConfig(
         baseOpacity: 0.65,
         velocityOpacityInfluence: 0.15,
@@ -164,24 +186,48 @@ void main() {
       final normalStroke = Stroke(
         id: 'norm',
         points: const [
-          StrokePoint(position: Offset(0, 0), timestamp: Duration.zero, velocity: 500, pressure: 0.5),
-          StrokePoint(position: Offset(10, 0), timestamp: Duration(milliseconds: 10), velocity: 500, pressure: 0.5),
+          StrokePoint(
+              position: Offset(0, 0),
+              timestamp: Duration.zero,
+              velocity: 500,
+              pressure: 0.5),
+          StrokePoint(
+              position: Offset(10, 0),
+              timestamp: Duration(milliseconds: 10),
+              velocity: 500,
+              pressure: 0.5),
         ],
       );
 
       final fastLightStroke = Stroke(
         id: 'fast_light',
         points: const [
-          StrokePoint(position: Offset(0, 0), timestamp: Duration.zero, velocity: 1500, pressure: 0.0),
-          StrokePoint(position: Offset(50, 0), timestamp: Duration(milliseconds: 10), velocity: 1500, pressure: 0.0),
+          StrokePoint(
+              position: Offset(0, 0),
+              timestamp: Duration.zero,
+              velocity: 1500,
+              pressure: 0.0),
+          StrokePoint(
+              position: Offset(50, 0),
+              timestamp: Duration(milliseconds: 10),
+              velocity: 1500,
+              pressure: 0.0),
         ],
       );
 
       final slowFirmStroke = Stroke(
         id: 'slow_firm',
         points: const [
-          StrokePoint(position: Offset(0, 0), timestamp: Duration.zero, velocity: 50, pressure: 1.0),
-          StrokePoint(position: Offset(5, 0), timestamp: Duration(milliseconds: 10), velocity: 50, pressure: 1.0),
+          StrokePoint(
+              position: Offset(0, 0),
+              timestamp: Duration.zero,
+              velocity: 50,
+              pressure: 1.0),
+          StrokePoint(
+              position: Offset(5, 0),
+              timestamp: Duration(milliseconds: 10),
+              velocity: 50,
+              pressure: 1.0),
         ],
       );
 
@@ -196,15 +242,26 @@ void main() {
       expect(opFirm, lessThanOrEqualTo(0.95));
     });
 
-    test('computeOutline produces closed geometry using round caps and round joins', () {
+    test(
+        'computeOutline produces closed geometry using round caps and round joins',
+        () {
       final renderer = PencilRenderer();
       final stroke = Stroke(
         id: 'line',
         baseWidth: 4.0,
         points: const [
-          StrokePoint(position: Offset(50, 50), timestamp: Duration.zero, pressure: 0.5),
-          StrokePoint(position: Offset(100, 50), timestamp: Duration(milliseconds: 16), pressure: 0.6),
-          StrokePoint(position: Offset(100, 100), timestamp: Duration(milliseconds: 32), pressure: 0.7),
+          StrokePoint(
+              position: Offset(50, 50),
+              timestamp: Duration.zero,
+              pressure: 0.5),
+          StrokePoint(
+              position: Offset(100, 50),
+              timestamp: Duration(milliseconds: 16),
+              pressure: 0.6),
+          StrokePoint(
+              position: Offset(100, 100),
+              timestamp: Duration(milliseconds: 32),
+              pressure: 0.7),
         ],
       );
 
@@ -221,8 +278,11 @@ void main() {
       }
     });
 
-    test('Canvas render completes without exceptions for single dab and multi-point stroke', () {
-      final renderer = PencilRenderer(const PencilConfig(enableGraphiteHalo: true));
+    test(
+        'Canvas render completes without exceptions for single dab and multi-point stroke',
+        () {
+      final renderer =
+          PencilRenderer(const PencilConfig(enableGraphiteHalo: true));
       final recorder = PictureRecorder();
       final canvas = Canvas(recorder);
 
@@ -231,7 +291,10 @@ void main() {
         id: 'dab',
         baseWidth: 3.0,
         points: const [
-          StrokePoint(position: Offset(50, 50), timestamp: Duration.zero, pressure: 0.8),
+          StrokePoint(
+              position: Offset(50, 50),
+              timestamp: Duration.zero,
+              pressure: 0.8),
         ],
       );
       expect(() => renderer.render(canvas, dab), returnsNormally);
@@ -242,14 +305,17 @@ void main() {
         baseWidth: 3.0,
         points: const [
           StrokePoint(position: Offset(10, 10), timestamp: Duration.zero),
-          StrokePoint(position: Offset(20, 15), timestamp: Duration(milliseconds: 10)),
-          StrokePoint(position: Offset(30, 25), timestamp: Duration(milliseconds: 20)),
+          StrokePoint(
+              position: Offset(20, 15), timestamp: Duration(milliseconds: 10)),
+          StrokePoint(
+              position: Offset(30, 25), timestamp: Duration(milliseconds: 20)),
         ],
       );
       expect(() => renderer.render(canvas, stroke), returnsNormally);
 
       // 3. Render with graphite halo disabled
-      final noHaloRenderer = PencilRenderer(const PencilConfig(enableGraphiteHalo: false));
+      final noHaloRenderer =
+          PencilRenderer(const PencilConfig(enableGraphiteHalo: false));
       expect(() => noHaloRenderer.render(canvas, stroke), returnsNormally);
 
       final picture = recorder.endRecording();
@@ -263,7 +329,8 @@ void main() {
         baseWidth: 0.0,
         points: const [
           StrokePoint(position: Offset(10, 10), timestamp: Duration.zero),
-          StrokePoint(position: Offset(20, 20), timestamp: Duration(milliseconds: 10)),
+          StrokePoint(
+              position: Offset(20, 20), timestamp: Duration(milliseconds: 10)),
         ],
       );
 
@@ -277,7 +344,8 @@ void main() {
       expect(picture, isNotNull);
     });
 
-    test('Pencil lead grain derives deterministic, continuous visual contour', () {
+    test('Pencil lead grain derives deterministic, continuous visual contour',
+        () {
       final renderer = PencilRenderer(const PencilConfig(
         enableLeadGrain: true,
         leadGrainAmplitude: 0.28,
@@ -287,11 +355,13 @@ void main() {
       final stroke = Stroke(
         id: 'grain_test',
         baseWidth: 3.0,
-        points: List.generate(30, (i) => StrokePoint(
-          position: Offset(50.0 + i * 5.0, 100.0 + 10.0 * (i % 3)),
-          timestamp: Duration(milliseconds: i * 8),
-          pressure: 0.6,
-        )),
+        points: List.generate(
+            30,
+            (i) => StrokePoint(
+                  position: Offset(50.0 + i * 5.0, 100.0 + 10.0 * (i % 3)),
+                  timestamp: Duration(milliseconds: i * 8),
+                  pressure: 0.6,
+                )),
       );
 
       final outline = renderer.computeOutline(stroke);
@@ -302,24 +372,31 @@ void main() {
       expect(contour1.getBounds(), equals(contour2.getBounds()));
 
       // When lead grain is disabled, contour matches clean outline
-      final smoothRenderer = PencilRenderer(const PencilConfig(enableLeadGrain: false));
-      final smoothBounds = smoothRenderer.deriveVisualContour(outline).getBounds();
+      final smoothRenderer =
+          PencilRenderer(const PencilConfig(enableLeadGrain: false));
+      final smoothBounds =
+          smoothRenderer.deriveVisualContour(outline).getBounds();
       expect(smoothBounds.left, closeTo(outline.bounds.left, 0.1));
       expect(smoothBounds.top, closeTo(outline.bounds.top, 0.1));
       expect(smoothBounds.right, closeTo(outline.bounds.right, 0.1));
       expect(smoothBounds.bottom, closeTo(outline.bounds.bottom, 0.1));
     });
 
-    test('Incremental Pencil build matches batch full build within 0.1 px tolerance', () {
-      const config = PencilConfig(enableLeadGrain: true, enableGraphiteHalo: true);
+    test(
+        'Incremental Pencil build matches batch full build within 0.1 px tolerance',
+        () {
+      const config =
+          PencilConfig(enableLeadGrain: true, enableGraphiteHalo: true);
       final renderer = PencilRenderer(config);
 
-      final points = List.generate(40, (i) => StrokePoint(
-        position: Offset(100.0 + i * 4.0, 150.0 + 12.0 * (i % 4)),
-        timestamp: Duration(milliseconds: i * 8),
-        pressure: 0.5 + 0.2 * (i % 3),
-        velocity: 300.0,
-      ));
+      final points = List.generate(
+          40,
+          (i) => StrokePoint(
+                position: Offset(100.0 + i * 4.0, 150.0 + 12.0 * (i % 4)),
+                timestamp: Duration(milliseconds: i * 8),
+                pressure: 0.5 + 0.2 * (i % 3),
+                velocity: 300.0,
+              ));
 
       // 1. Full batch build
       final fullStroke = Stroke(id: 'batch_p', points: points, baseWidth: 3.0);
@@ -345,6 +422,5 @@ void main() {
       expect(incBounds.right, closeTo(batchBounds.right, 0.25));
       expect(incBounds.bottom, closeTo(batchBounds.bottom, 0.25));
     });
-
   });
 }

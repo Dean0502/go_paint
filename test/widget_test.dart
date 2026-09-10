@@ -5,7 +5,8 @@ import 'package:go_paint/go_paint.dart';
 
 void main() {
   group('KidzCanvas Widget Tests', () {
-    testWidgets('Renders KidzCanvas and draws on pointer drag gesture', (tester) async {
+    testWidgets('Renders KidzCanvas and draws on pointer drag gesture',
+        (tester) async {
       final controller = KidzCanvasController();
 
       await tester.pumpWidget(
@@ -24,7 +25,8 @@ void main() {
       expect(controller.strokes, isEmpty);
 
       // Perform touch drag across canvas
-      final gesture = await tester.startGesture(const Offset(50, 50), kind: PointerDeviceKind.touch);
+      final gesture = await tester.startGesture(const Offset(50, 50),
+          kind: PointerDeviceKind.touch);
       await tester.pump();
       expect(controller.isDrawing, isTrue);
 

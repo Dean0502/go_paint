@@ -25,14 +25,16 @@ class KinematicsTracker {
 
   /// Calculates velocity and direction between [current] and [previous] samples.
   void update(PointerSample current, PointerSample previous) {
-    final dtMicroseconds = (current.timestamp - previous.timestamp).inMicroseconds;
+    final dtMicroseconds =
+        (current.timestamp - previous.timestamp).inMicroseconds;
     final dtSeconds = dtMicroseconds / 1e6;
 
     final displacement = current.position - previous.position;
     final distance = displacement.distance;
 
     if (distance > 0.001) {
-      _lastDirection = Offset(displacement.dx / distance, displacement.dy / distance);
+      _lastDirection =
+          Offset(displacement.dx / distance, displacement.dy / distance);
     }
 
     // Guard against identical timestamps or long pauses (> 100ms)

@@ -52,7 +52,9 @@ class CatmullRomSpline {
     final t3 = getKnot(t2, p2, p3);
 
     // Safeguard against coincident points
-    if ((t1 - t0).abs() < 1e-6 || (t2 - t1).abs() < 1e-6 || (t3 - t2).abs() < 1e-6) {
+    if ((t1 - t0).abs() < 1e-6 ||
+        (t2 - t1).abs() < 1e-6 ||
+        (t3 - t2).abs() < 1e-6) {
       return Offset.lerp(p1, p2, t)!;
     }
 

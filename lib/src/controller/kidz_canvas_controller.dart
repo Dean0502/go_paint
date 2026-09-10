@@ -39,10 +39,12 @@ class KidzCanvasController extends ChangeNotifier {
   StabilizerConfig get config => _pointerInput.stabilizer.config;
 
   /// The quantitative benchmark report from the most recently completed stroke.
-  StrokeBenchmarkReport? get lastBenchmarkReport => _pointerInput.lastBenchmarkReport;
+  StrokeBenchmarkReport? get lastBenchmarkReport =>
+      _pointerInput.lastBenchmarkReport;
 
   /// Full chronological session history of benchmark reports.
-  List<StrokeBenchmarkReport> get benchmarkHistory => List.unmodifiable(_benchmarkHistory);
+  List<StrokeBenchmarkReport> get benchmarkHistory =>
+      List.unmodifiable(_benchmarkHistory);
 
   /// Clears recorded benchmark history for this session.
   void clearBenchmarkHistory() {
@@ -175,4 +177,3 @@ class KidzCanvasController extends ChangeNotifier {
 
 /// Package-level alias for [KidzCanvasController].
 typedef GoPaintController = KidzCanvasController;
-

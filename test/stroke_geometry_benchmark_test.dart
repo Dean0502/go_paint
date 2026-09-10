@@ -55,11 +55,14 @@ void main() {
       // ignore: avoid_print
       print('Contour Point Count: ${lastOutline!.contour.length}');
       // ignore: avoid_print
-      print('Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
+      print(
+          'Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
       // ignore: avoid_print
-      print('Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
+      print(
+          'Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
 
-      expect(avgMs, lessThan(50.0)); // Well under 50ms under heavy test runner load
+      expect(avgMs,
+          lessThan(50.0)); // Well under 50ms under heavy test runner load
       expect(lastOutline.contour.length, greaterThan(100));
     });
 
@@ -94,11 +97,14 @@ void main() {
       // ignore: avoid_print
       print('Contour Point Count: ${lastOutline!.contour.length}');
       // ignore: avoid_print
-      print('Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
+      print(
+          'Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
       // ignore: avoid_print
-      print('Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
+      print(
+          'Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
 
-      expect(avgMs, lessThan(100.0)); // Well under 100ms under heavy test runner load
+      expect(avgMs,
+          lessThan(100.0)); // Well under 100ms under heavy test runner load
       expect(lastOutline.contour.length, greaterThan(1000));
     });
 
@@ -133,11 +139,14 @@ void main() {
       // ignore: avoid_print
       print('Contour Point Count: ${lastOutline!.contour.length}');
       // ignore: avoid_print
-      print('Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
+      print(
+          'Centerline Length:   ${lastOutline.centerlineLength.toStringAsFixed(1)} px');
       // ignore: avoid_print
-      print('Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
+      print(
+          'Outline Perimeter:   ${lastOutline.perimeter.toStringAsFixed(1)} px');
 
-      expect(avgMs, lessThan(350.0)); // Linear O(N) scaling under test runner load
+      expect(
+          avgMs, lessThan(350.0)); // Linear O(N) scaling under test runner load
       expect(lastOutline.contour.length, greaterThan(10000));
     });
   });

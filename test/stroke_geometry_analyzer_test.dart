@@ -25,7 +25,8 @@ void main() {
     });
 
     // 2. translated processed path -> correct displacement
-    test('2. translated processed path produces exact displacement measurement', () {
+    test('2. translated processed path produces exact displacement measurement',
+        () {
       final rawPoints = [
         const Offset(0, 0),
         const Offset(20, 0),
@@ -110,7 +111,8 @@ void main() {
     });
 
     // 5. circle -> expected radial error
-    test('5. circle produces expected circle center, radius, and radial error', () {
+    test('5. circle produces expected circle center, radius, and radial error',
+        () {
       // Circle centered at (100, 100) with radius 50
       const center = Offset(100, 100);
       const r = 50.0;
@@ -119,9 +121,11 @@ void main() {
 
       for (int i = 0; i <= 24; i++) {
         final angle = (i * 2.0 * math.pi) / 24;
-        rawPoints.add(Offset(center.dx + r * math.cos(angle), center.dy + r * math.sin(angle)));
+        rawPoints.add(Offset(
+            center.dx + r * math.cos(angle), center.dy + r * math.sin(angle)));
         // Slightly flattened processed circle (radius 48)
-        processedPoints.add(Offset(center.dx + 48.0 * math.cos(angle), center.dy + 48.0 * math.sin(angle)));
+        processedPoints.add(Offset(center.dx + 48.0 * math.cos(angle),
+            center.dy + 48.0 * math.sin(angle)));
       }
 
       final report = StrokeGeometryAnalyzer.analyze(rawPoints, processedPoints);
@@ -137,7 +141,9 @@ void main() {
     });
 
     // 6. no corner -> detected=false, not 0.0
-    test('6. smooth curve or straight line reports detected=false and null apex', () {
+    test(
+        '6. smooth curve or straight line reports detected=false and null apex',
+        () {
       final linePoints = [
         const Offset(10, 10),
         const Offset(25, 10),
@@ -172,16 +178,21 @@ void main() {
       final rawPoints3 = rawPoints1.map((p) => p * 3.0).toList();
       final processedPoints3 = processedPoints1.map((p) => p * 3.0).toList();
 
-      final report1 = StrokeGeometryAnalyzer.analyze(rawPoints1, processedPoints1);
-      final report3 = StrokeGeometryAnalyzer.analyze(rawPoints3, processedPoints3);
+      final report1 =
+          StrokeGeometryAnalyzer.analyze(rawPoints1, processedPoints1);
+      final report3 =
+          StrokeGeometryAnalyzer.analyze(rawPoints3, processedPoints3);
 
-      expect(report3.maxDeviationPx, closeTo(report1.maxDeviationPx * 3.0, 0.01));
-      expect(report3.averageDeviationPx, closeTo(report1.averageDeviationPx * 3.0, 0.01));
+      expect(
+          report3.maxDeviationPx, closeTo(report1.maxDeviationPx * 3.0, 0.01));
+      expect(report3.averageDeviationPx,
+          closeTo(report1.averageDeviationPx * 3.0, 0.01));
       expect(report3.rawPathLength, closeTo(report1.rawPathLength * 3.0, 0.01));
     });
 
     // 8. empty/invalid stroke -> safe null result
-    test('8. empty or single-point strokes produce safe non-crashing results', () {
+    test('8. empty or single-point strokes produce safe non-crashing results',
+        () {
       final emptyReport = StrokeGeometryAnalyzer.analyze([], []);
 
       expect(emptyReport.maxDeviationPx, 0.0);
@@ -191,13 +202,15 @@ void main() {
       expect(emptyReport.straightLine, isNull);
       expect(emptyReport.circle, isNull);
 
-      final singlePointReport = StrokeGeometryAnalyzer.analyze([const Offset(5, 5)], [const Offset(5, 5)]);
+      final singlePointReport = StrokeGeometryAnalyzer.analyze(
+          [const Offset(5, 5)], [const Offset(5, 5)]);
       expect(singlePointReport.maxDeviationPx, 0.0);
       expect(singlePointReport.corner.detected, isFalse);
     });
 
     // 9. JSON serialization and deserialization
-    test('9. StrokeGeometryReport serializes to and from JSON matching schema', () {
+    test('9. StrokeGeometryReport serializes to and from JSON matching schema',
+        () {
       final raw = [
         const Offset(0, 0),
         const Offset(20, 0),
@@ -223,7 +236,8 @@ void main() {
 
       final restored = StrokeGeometryReport.fromJson(json);
       expect(restored.maxDeviationPx, closeTo(report.maxDeviationPx, 0.01));
-      expect(restored.averageDeviationPx, closeTo(report.averageDeviationPx, 0.01));
+      expect(restored.averageDeviationPx,
+          closeTo(report.averageDeviationPx, 0.01));
       expect(restored.corner.detected, equals(report.corner.detected));
     });
   });

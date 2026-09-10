@@ -84,8 +84,12 @@ void main() {
 
     test('Clear resets all strokes and history', () {
       final controller = KidzCanvasController();
-      controller.handlePointerDown(const PointerSample(position: Offset(10, 10), timestamp: Duration.zero, pointerId: 1));
-      controller.handlePointerUp(const PointerSample(position: Offset(20, 20), timestamp: Duration(milliseconds: 10), pointerId: 1));
+      controller.handlePointerDown(const PointerSample(
+          position: Offset(10, 10), timestamp: Duration.zero, pointerId: 1));
+      controller.handlePointerUp(const PointerSample(
+          position: Offset(20, 20),
+          timestamp: Duration(milliseconds: 10),
+          pointerId: 1));
 
       expect(controller.strokes.length, equals(1));
       controller.clear();

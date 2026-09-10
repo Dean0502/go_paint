@@ -12,7 +12,9 @@ void main() {
     );
 
     // 1. Horizontal constant-width stroke
-    test('1. Horizontal constant-width stroke: upper boundary y=90, lower boundary y=110', () {
+    test(
+        '1. Horizontal constant-width stroke: upper boundary y=90, lower boundary y=110',
+        () {
       final outline = builder.buildFromOffsets(
         [const Offset(10, 100), const Offset(100, 100)],
         width: 20.0,
@@ -52,7 +54,9 @@ void main() {
     });
 
     // 3. Square cap extension
-    test('3. Square cap extension extends forward and backward by exactly radius R', () {
+    test(
+        '3. Square cap extension extends forward and backward by exactly radius R',
+        () {
       final outline = builder.buildFromOffsets(
         [const Offset(50, 100), const Offset(150, 100)],
         width: 20.0, // radius = 10.0
@@ -82,8 +86,10 @@ void main() {
       ], width: 20.0, join: StrokeJoinType.miter);
 
       // Left boundary (outer) should have a miter point extending beyond (60, 40)
-      final maxOuterX = miterOutline.leftBoundary.map((p) => p.dx).reduce(math.max);
-      final minOuterY = miterOutline.leftBoundary.map((p) => p.dy).reduce(math.min);
+      final maxOuterX =
+          miterOutline.leftBoundary.map((p) => p.dx).reduce(math.max);
+      final minOuterY =
+          miterOutline.leftBoundary.map((p) => p.dy).reduce(math.min);
       expect(maxOuterX, closeTo(60.0, 1.0));
       expect(minOuterY, closeTo(40.0, 1.0));
 
@@ -102,12 +108,15 @@ void main() {
 
       expect(fallbackOutline.isNotEmpty, isTrue);
       // Outer miter point is not present, beveled flat bridge between (50, 40) and (60, 50)
-      final fallbackMaxX = fallbackOutline.leftBoundary.map((p) => p.dx).reduce(math.max);
+      final fallbackMaxX =
+          fallbackOutline.leftBoundary.map((p) => p.dx).reduce(math.max);
       expect(fallbackMaxX, lessThanOrEqualTo(60.0 + 1e-4));
     });
 
     // 6. Left/right boundary orientation
-    test('6. Left/right boundary orientation in Flutter coordinate space (Y down)', () {
+    test(
+        '6. Left/right boundary orientation in Flutter coordinate space (Y down)',
+        () {
       // Vector pointing right: (1, 0)
       final nLeft = GeometryMath.leftNormal(const Offset(1, 0));
       final nRight = GeometryMath.rightNormal(const Offset(1, 0));
@@ -130,7 +139,8 @@ void main() {
     });
 
     // 7. Closed path
-    test('7. Outline path is strictly closed and non-empty for valid strokes', () {
+    test('7. Outline path is strictly closed and non-empty for valid strokes',
+        () {
       final outline = builder.buildFromOffsets([
         const Offset(10, 10),
         const Offset(30, 80),
@@ -177,7 +187,8 @@ void main() {
     });
 
     // 10. Single-point dab
-    test('10. Single-point dab produces clean circular, square, or butt dabs', () {
+    test('10. Single-point dab produces clean circular, square, or butt dabs',
+        () {
       final roundDab = builder.buildFromOffsets(
         [const Offset(100, 100)],
         width: 16.0,
@@ -203,7 +214,8 @@ void main() {
     });
 
     // 11. Zero-width behavior
-    test('11. Zero-width stroke produces safe empty outline without crashing', () {
+    test('11. Zero-width stroke produces safe empty outline without crashing',
+        () {
       final outline = builder.buildFromOffsets(
         [const Offset(10, 10), const Offset(50, 50)],
         width: 0.0,
@@ -214,18 +226,36 @@ void main() {
     });
 
     // 12. Verification of all 16 required test shapes
-    test('12. Validation of all 16 required test shapes produces finite, non-empty outlines', () {
+    test(
+        '12. Validation of all 16 required test shapes produces finite, non-empty outlines',
+        () {
       final shapes = <String, List<Offset>>{
         'single_point_dab': [const Offset(100, 100)],
         'short_stroke': [const Offset(100, 100), const Offset(100.8, 100.4)],
         'horizontal_line': [const Offset(20, 100), const Offset(180, 100)],
         'vertical_line': [const Offset(100, 20), const Offset(100, 180)],
         'diagonal_line': [const Offset(20, 20), const Offset(180, 180)],
-        'smooth_curve': List.generate(25, (i) => Offset(20.0 + i * 6.0, 100.0 + 30.0 * math.sin(i * 0.25))),
-        'full_circle': List.generate(36, (i) => Offset(100.0 + 50.0 * math.cos(i * math.pi / 18), 100.0 + 50.0 * math.sin(i * math.pi / 18))),
-        '90_deg_corner': [const Offset(30, 60), const Offset(100, 60), const Offset(100, 130)],
-        'acute_corner': [const Offset(30, 40), const Offset(120, 100), const Offset(40, 120)],
-        'obtuse_corner': [const Offset(30, 40), const Offset(100, 80), const Offset(170, 60)],
+        'smooth_curve': List.generate(25,
+            (i) => Offset(20.0 + i * 6.0, 100.0 + 30.0 * math.sin(i * 0.25))),
+        'full_circle': List.generate(
+            36,
+            (i) => Offset(100.0 + 50.0 * math.cos(i * math.pi / 18),
+                100.0 + 50.0 * math.sin(i * math.pi / 18))),
+        '90_deg_corner': [
+          const Offset(30, 60),
+          const Offset(100, 60),
+          const Offset(100, 130)
+        ],
+        'acute_corner': [
+          const Offset(30, 40),
+          const Offset(120, 100),
+          const Offset(40, 120)
+        ],
+        'obtuse_corner': [
+          const Offset(30, 40),
+          const Offset(100, 80),
+          const Offset(170, 60)
+        ],
         'zigzag': [
           const Offset(20, 40),
           const Offset(60, 100),
@@ -267,15 +297,22 @@ void main() {
         final outline = builder.buildFromOffsets(pts, width: width);
 
         if (name == 'zero_width_stroke') {
-          expect(outline.isEmpty, isTrue, reason: 'Shape $name should be empty');
+          expect(outline.isEmpty, isTrue,
+              reason: 'Shape $name should be empty');
         } else {
-          expect(outline.isNotEmpty, isTrue, reason: 'Shape $name should not be empty');
-          expect(outline.bounds.isFinite, isTrue, reason: 'Shape $name bounds should be finite');
+          expect(outline.isNotEmpty, isTrue,
+              reason: 'Shape $name should not be empty');
+          expect(outline.bounds.isFinite, isTrue,
+              reason: 'Shape $name bounds should be finite');
           for (final p in outline.contour) {
-            expect(p.dx.isFinite, isTrue, reason: 'Shape $name vertex dx must be finite');
-            expect(p.dy.isFinite, isTrue, reason: 'Shape $name vertex dy must be finite');
-            expect(p.dx.isNaN, isFalse, reason: 'Shape $name vertex dx must not be NaN');
-            expect(p.dy.isNaN, isFalse, reason: 'Shape $name vertex dy must not be NaN');
+            expect(p.dx.isFinite, isTrue,
+                reason: 'Shape $name vertex dx must be finite');
+            expect(p.dy.isFinite, isTrue,
+                reason: 'Shape $name vertex dy must be finite');
+            expect(p.dx.isNaN, isFalse,
+                reason: 'Shape $name vertex dx must not be NaN');
+            expect(p.dy.isNaN, isFalse,
+                reason: 'Shape $name vertex dy must not be NaN');
           }
         }
       }

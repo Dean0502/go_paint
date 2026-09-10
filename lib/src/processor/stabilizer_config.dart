@@ -76,10 +76,12 @@ class StabilizerConfig {
       streamlineSlow: streamlineSlow ?? this.streamlineSlow,
       streamlineFast: streamlineFast ?? this.streamlineFast,
       cornerAngleDeg: cornerAngleDeg ?? this.cornerAngleDeg,
-      cornerSmoothingFactor: cornerSmoothingFactor ?? this.cornerSmoothingFactor,
+      cornerSmoothingFactor:
+          cornerSmoothingFactor ?? this.cornerSmoothingFactor,
       predictionEnabled: predictionEnabled ?? this.predictionEnabled,
       predictionHorizonMs: predictionHorizonMs ?? this.predictionHorizonMs,
-      maxPredictionDistance: maxPredictionDistance ?? this.maxPredictionDistance,
+      maxPredictionDistance:
+          maxPredictionDistance ?? this.maxPredictionDistance,
       catmullThreshold: catmullThreshold ?? this.catmullThreshold,
       catmullSteps: catmullSteps ?? this.catmullSteps,
     );
@@ -110,10 +112,13 @@ class StabilizerConfig {
       streamlineSlow: (json['streamlineSlow'] as num?)?.toDouble() ?? 0.45,
       streamlineFast: (json['streamlineFast'] as num?)?.toDouble() ?? 0.08,
       cornerAngleDeg: (json['cornerAngleDeg'] as num?)?.toDouble() ?? 65.0,
-      cornerSmoothingFactor: (json['cornerSmoothingFactor'] as num?)?.toDouble() ?? 0.12,
+      cornerSmoothingFactor:
+          (json['cornerSmoothingFactor'] as num?)?.toDouble() ?? 0.12,
       predictionEnabled: json['predictionEnabled'] as bool? ?? false,
-      predictionHorizonMs: (json['predictionHorizonMs'] as num?)?.toDouble() ?? 16.0,
-      maxPredictionDistance: (json['maxPredictionDistance'] as num?)?.toDouble() ?? 15.0,
+      predictionHorizonMs:
+          (json['predictionHorizonMs'] as num?)?.toDouble() ?? 16.0,
+      maxPredictionDistance:
+          (json['maxPredictionDistance'] as num?)?.toDouble() ?? 15.0,
       catmullThreshold: (json['catmullThreshold'] as num?)?.toDouble() ?? 14.0,
       catmullSteps: (json['catmullSteps'] as num?)?.toInt() ?? 2,
     );

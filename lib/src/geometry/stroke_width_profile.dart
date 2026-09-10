@@ -25,9 +25,10 @@ class StrokeWidthConfig {
     this.velocityMax = 1000.0,
     this.velocityFactorSlow = 1.2,
     this.velocityFactorFast = 0.8,
-  }) : assert(baseWidth >= 0.0, 'baseWidth must be non-negative'),
-       assert(minWidthFactor >= 0.0, 'minWidthFactor must be non-negative'),
-       assert(maxWidthFactor >= minWidthFactor, 'maxWidthFactor must be >= minWidthFactor');
+  })  : assert(baseWidth >= 0.0, 'baseWidth must be non-negative'),
+        assert(minWidthFactor >= 0.0, 'minWidthFactor must be non-negative'),
+        assert(maxWidthFactor >= minWidthFactor,
+            'maxWidthFactor must be >= minWidthFactor');
 
   /// Creates a constant-width configuration.
   const StrokeWidthConfig.constant(double width)
@@ -108,7 +109,8 @@ class DynamicWidthProfile extends StrokeWidthProfile {
       final clampedP = point.pressure.clamp(0.0, 1.0);
       final shapedP = math.pow(clampedP, config.pressureGamma).toDouble();
       // Map pressure 0.0..1.0 to minWidthFactor..maxWidthFactor
-      pressureFactor = config.minWidthFactor + shapedP * (config.maxWidthFactor - config.minWidthFactor);
+      pressureFactor = config.minWidthFactor +
+          shapedP * (config.maxWidthFactor - config.minWidthFactor);
     }
 
     double velocityFactor = 1.0;
@@ -118,7 +120,8 @@ class DynamicWidthProfile extends StrokeWidthProfile {
           ? (v - config.velocityMin) / (config.velocityMax - config.velocityMin)
           : 0.0;
       // Slow movement -> velocityFactorSlow; Fast movement -> velocityFactorFast
-      velocityFactor = config.velocityFactorSlow + t * (config.velocityFactorFast - config.velocityFactorSlow);
+      velocityFactor = config.velocityFactorSlow +
+          t * (config.velocityFactorFast - config.velocityFactorSlow);
     }
 
     final computed = config.baseWidth * pressureFactor * velocityFactor;

@@ -63,9 +63,12 @@ class CrayonWidthConfig {
     this.smoothingFactor = 0.40,
   })  : assert(baseWidth >= 0.0, 'baseWidth must be non-negative'),
         assert(minWidthFactor >= 0.0, 'minWidthFactor must be non-negative'),
-        assert(maxWidthFactor >= minWidthFactor, 'maxWidthFactor must be >= minWidthFactor'),
-        assert(velocityMax >= velocityMin, 'velocityMax must be >= velocityMin'),
-        assert(smoothingFactor > 0.0 && smoothingFactor <= 1.0, 'smoothingFactor must be in (0, 1]');
+        assert(maxWidthFactor >= minWidthFactor,
+            'maxWidthFactor must be >= minWidthFactor'),
+        assert(
+            velocityMax >= velocityMin, 'velocityMax must be >= velocityMin'),
+        assert(smoothingFactor > 0.0 && smoothingFactor <= 1.0,
+            'smoothingFactor must be in (0, 1]');
 
   CrayonWidthConfig copyWith({
     double? baseWidth,
@@ -124,8 +127,10 @@ class CrayonWidthProfile extends StrokeWidthProfile {
     double velocityFactor = 1.0;
     if (config.velocityMax > config.velocityMin) {
       final v = point.velocity.clamp(config.velocityMin, config.velocityMax);
-      final t = (v - config.velocityMin) / (config.velocityMax - config.velocityMin);
-      velocityFactor = config.velocitySlowFactor + t * (config.velocityFastFactor - config.velocitySlowFactor);
+      final t =
+          (v - config.velocityMin) / (config.velocityMax - config.velocityMin);
+      velocityFactor = config.velocitySlowFactor +
+          t * (config.velocityFastFactor - config.velocitySlowFactor);
     }
 
     // 2. Pressure factor (wax flattening under firm pressure)
@@ -188,7 +193,8 @@ class CrayonWidthProfile extends StrokeWidthProfile {
       // Entry taper
       if (taperCount > 0 && i < taperCount) {
         final t = i / taperCount;
-        final factor = config.startTaperFactor + t * (1.0 - config.startTaperFactor);
+        final factor =
+            config.startTaperFactor + t * (1.0 - config.startTaperFactor);
         width *= factor;
       }
 
@@ -196,11 +202,13 @@ class CrayonWidthProfile extends StrokeWidthProfile {
       final distFromEnd = points.length - 1 - i;
       if (isComplete && taperCount > 0 && distFromEnd < taperCount) {
         final t = distFromEnd / taperCount;
-        final factor = config.endTaperFactor + t * (1.0 - config.endTaperFactor);
+        final factor =
+            config.endTaperFactor + t * (1.0 - config.endTaperFactor);
         width *= factor;
       }
 
-      final clampedW = width.clamp(minW * 0.5, maxW).clamp(0.0, double.infinity);
+      final clampedW =
+          width.clamp(minW * 0.5, maxW).clamp(0.0, double.infinity);
       radii[i] = math.max(0.0, clampedW * 0.5);
     }
 

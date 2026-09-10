@@ -24,13 +24,17 @@ void main() {
       return points;
     }
 
-    test('Geometric Equivalence: Incremental build matches batch full build within 0.1 px tolerance', () {
+    test(
+        'Geometric Equivalence: Incremental build matches batch full build within 0.1 px tolerance',
+        () {
       final points = generateTrajectory(60);
-      const config = CrayonConfig(enableEdgeVariation: true, enableEdgeFringe: true);
+      const config =
+          CrayonConfig(enableEdgeVariation: true, enableEdgeFringe: true);
       final renderer = CrayonRenderer(config);
 
       // 1. Full batch build
-      final fullStroke = Stroke(id: 'batch_stroke', points: points, baseWidth: 12.0);
+      final fullStroke =
+          Stroke(id: 'batch_stroke', points: points, baseWidth: 12.0);
       final outline = renderer.computeOutline(fullStroke);
       final batchPath = renderer.deriveVisualContour(outline);
       final batchBounds = batchPath.getBounds();
@@ -59,7 +63,9 @@ void main() {
       expect(incBounds.height, closeTo(batchBounds.height, 0.3));
     });
 
-    test('Deterministic Equivalence: Repeated builds produce identical visual contour output', () {
+    test(
+        'Deterministic Equivalence: Repeated builds produce identical visual contour output',
+        () {
       final points = generateTrajectory(40);
       const config = CrayonConfig(enableEdgeVariation: true);
       final cache1 = CrayonIncrementalCache(config: config);
@@ -74,7 +80,9 @@ void main() {
       expect(path1.getBounds().isEmpty, isFalse);
     });
 
-    test('Completed Stroke Cache: Completed strokes freeze visual path and avoid re-evaluation', () {
+    test(
+        'Completed Stroke Cache: Completed strokes freeze visual path and avoid re-evaluation',
+        () {
       final points = generateTrajectory(50);
       final renderer = CrayonRenderer();
       final completedStroke = Stroke(
@@ -103,13 +111,17 @@ void main() {
       expect(picture, isNotNull);
     });
 
-    test('Incremental vs Full Rebuild Scalability Benchmark (100, 500, 1000 points)', () {
-      const config = CrayonConfig(enableEdgeVariation: true, enableEdgeFringe: true);
+    test(
+        'Incremental vs Full Rebuild Scalability Benchmark (100, 500, 1000 points)',
+        () {
+      const config =
+          CrayonConfig(enableEdgeVariation: true, enableEdgeFringe: true);
       final renderer = CrayonRenderer(config);
 
       for (final count in [100, 500, 1000]) {
         final points = generateTrajectory(count);
-        final stroke = Stroke(id: 'bench_$count', points: points, baseWidth: 12.0);
+        final stroke =
+            Stroke(id: 'bench_$count', points: points, baseWidth: 12.0);
 
         // A. Measure Full Rebuild Time
         final swFull = Stopwatch()..start();
@@ -121,11 +133,15 @@ void main() {
         // B. Measure Incremental Feed Time (Step N delta)
         final cache = CrayonIncrementalCache(config: config);
         // Pre-feed up to count - 1 with same ID
-        final preStroke = Stroke(id: 'bench_inc_$count', points: points.sublist(0, count - 1), baseWidth: 12.0);
+        final preStroke = Stroke(
+            id: 'bench_inc_$count',
+            points: points.sublist(0, count - 1),
+            baseWidth: 12.0);
         cache.updateActiveStroke(preStroke);
 
         // Time the single arrival of point N
-        final fullIncStroke = Stroke(id: 'bench_inc_$count', points: points, baseWidth: 12.0);
+        final fullIncStroke =
+            Stroke(id: 'bench_inc_$count', points: points, baseWidth: 12.0);
         final swInc = Stopwatch()..start();
         final incPath = cache.updateActiveStroke(fullIncStroke);
         swInc.stop();
@@ -147,16 +163,20 @@ void main() {
           expect(incMs, lessThan(fullMs));
         }
         // At all scales, incremental step should be well within frame budgets
-        expect(incMs, lessThan(20.0)); // VM unoptimized test environment threshold
+        expect(
+            incMs, lessThan(20.0)); // VM unoptimized test environment threshold
       }
     });
 
-    test('Rolling Telemetry: p50, p95, and max accurately track interactive workload', () {
+    test(
+        'Rolling Telemetry: p50, p95, and max accurately track interactive workload',
+        () {
       final points = generateTrajectory(80);
       final cache = CrayonIncrementalCache(config: const CrayonConfig());
 
       for (int i = 2; i <= points.length; i++) {
-        final subStroke = Stroke(id: 'telem_stroke', points: points.sublist(0, i), baseWidth: 12.0);
+        final subStroke = Stroke(
+            id: 'telem_stroke', points: points.sublist(0, i), baseWidth: 12.0);
         cache.updateActiveStroke(subStroke);
       }
 

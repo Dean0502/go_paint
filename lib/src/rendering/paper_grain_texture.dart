@@ -49,7 +49,8 @@ class PaperGrainTexture {
     // 1. Clear base with semi-transparent valley floor
     // This ensures light pencil strokes have visible porous valleys.
     final basePaint = Paint()..color = const Color(0x18FFFFFF);
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()), basePaint);
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, size.toDouble(), size.toDouble()), basePaint);
 
     final dotPaint = Paint()..strokeCap = StrokeCap.round;
 
@@ -63,7 +64,10 @@ class PaperGrainTexture {
         for (final dy in [-size.toDouble(), 0.0, size.toDouble()]) {
           final px = x + dx;
           final py = y + dy;
-          if (px >= -radius && px <= size + radius && py >= -radius && py <= size + radius) {
+          if (px >= -radius &&
+              px <= size + radius &&
+              py >= -radius &&
+              py <= size + radius) {
             canvas.drawPoints(ui.PointMode.points, [Offset(px, py)], dotPaint);
           }
         }
@@ -71,7 +75,8 @@ class PaperGrainTexture {
     }
 
     // Helper to draw toroidal wrapped fiber micro-segments
-    void drawWrappedFiber(double x1, double y1, double x2, double y2, double width, int alpha) {
+    void drawWrappedFiber(
+        double x1, double y1, double x2, double y2, double width, int alpha) {
       final fiberPaint = Paint()
         ..color = Color.fromARGB(alpha, 255, 255, 255)
         ..strokeWidth = width
@@ -86,7 +91,8 @@ class PaperGrainTexture {
           final py1 = y1 + dy;
           final px2 = px1 + sx;
           final py2 = py1 + sy;
-          if ((px1 >= -5 && px1 <= size + 5) || (px2 >= -5 && px2 <= size + 5)) {
+          if ((px1 >= -5 && px1 <= size + 5) ||
+              (px2 >= -5 && px2 <= size + 5)) {
             canvas.drawLine(Offset(px1, py1), Offset(px2, py2), fiberPaint);
           }
         }
@@ -113,7 +119,8 @@ class PaperGrainTexture {
       final fx2 = fx + math.cos(angle) * len;
       final fy2 = fy + math.sin(angle) * len;
       final fAlpha = 50 + random.nextInt(110);
-      drawWrappedFiber(fx, fy, fx2, fy2, 0.8 + random.nextDouble() * 0.8, fAlpha);
+      drawWrappedFiber(
+          fx, fy, fx2, fy2, 0.8 + random.nextDouble() * 0.8, fAlpha);
     }
 
     // 4. Sharp tooth peaks (high-frequency microscopic paper grains)

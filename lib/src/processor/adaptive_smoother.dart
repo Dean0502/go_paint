@@ -26,7 +26,8 @@ class AdaptiveSmoother {
         .clamp(0.0, 1.0);
 
     // Lerp from slow streamline (high dampening) to fast streamline (low latency)
-    return config.streamlineSlow + (config.streamlineFast - config.streamlineSlow) * t;
+    return config.streamlineSlow +
+        (config.streamlineFast - config.streamlineSlow) * t;
   }
 
   /// Filters [rawPosition] against current running position using [velocity] or [overrideFactor].
@@ -40,8 +41,10 @@ class AdaptiveSmoother {
     final followFactor = (1.0 - streamline).clamp(0.02, 1.0);
 
     _smoothedPosition = Offset(
-      _smoothedPosition!.dx + (rawPosition.dx - _smoothedPosition!.dx) * followFactor,
-      _smoothedPosition!.dy + (rawPosition.dy - _smoothedPosition!.dy) * followFactor,
+      _smoothedPosition!.dx +
+          (rawPosition.dx - _smoothedPosition!.dx) * followFactor,
+      _smoothedPosition!.dy +
+          (rawPosition.dy - _smoothedPosition!.dy) * followFactor,
     );
 
     return _smoothedPosition!;
