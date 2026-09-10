@@ -1,0 +1,11 @@
+.dart_tool/
+.packages
+build/
+.DS_Store
+*.lock
+example/build/
+example/.dart_tool/
+example/.flutter-plugins
+example/.flutter-plugin-dependencies
+example/macos/Flutter/ephemeral/
+example/macos/Pods/
