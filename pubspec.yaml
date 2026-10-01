@@ -1,6 +1,6 @@
 name: go_paint
-description: A high-performance 120 Hz vector drawing and painting canvas for Flutter with authentic crayon and graphite pencil brushes.
-version: 0.1.0
+description: A high-performance 120 Hz vector drawing, inking and note-taking canvas for Flutter with dual-layer compositing, vector eraser, and authentic brushes.
+version: 0.2.0-dev
 homepage: https://github.com/Dean0502/go_paint
 repository: https://github.com/Dean0502/go_paint
 issue_tracker: https://github.com/Dean0502/go_paint/issues

@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:go_paint/go_paint.dart';
 
-/// Geometry Debugger and Live Drawing Stress Test screen for kidz_canvas v0.4.1.
+/// Geometry Debugger and Live Drawing Stress Test screen for GO Engine.
 class GeometryDebuggerScreen extends StatefulWidget {
   const GeometryDebuggerScreen({super.key});
 

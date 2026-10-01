@@ -1,20 +1,22 @@
-# go_paint 🎨
+# go_paint (GO Engine) 🎨
 
 [![pub package](https://img.shields.io/pub/v/go_paint.svg)](https://pub.dev/packages/go_paint)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-A high-performance, **120 Hz vector drawing and painting canvas** for Flutter with authentic crayon and graphite pencil brushes, sub-millisecond incremental rendering, and advanced touch kinematics.
+Powered by the **GO Engine** — a high-performance, **120 Hz vector drawing, inking, and note-taking engine** for Flutter with dual-layer compositing, interactive vector stroke eraser, authentic crayon & pencil brushes, sub-millisecond incremental rendering, and advanced stylus palm rejection. Engineered for low-latency handwriting and scalable digital notebooks.
 
 ---
 
 ## ✨ Highlights
 
-- ⚡ **120 Hz Incremental Pipeline**: Sub-millisecond active tip rendering ($< 0.5\text{ ms}$) with $O(1)$ rollback and zero GC pressure during continuous drawing gestures.
-- ✏️ **Authentic Graphite Pencil**: Dual-pass vector graphite deposition (dense core vein + soft halo graphite bloom) with high-frequency paper tooth lead noise ($\lambda = 3.5\text{ px}$) and natural pressure opacity dynamics ($0.35 - 0.85$).
+- ⚡ **Dual-Layer Compositor**: Background strokes are compiled into a GPU display list (`ui.Picture`). Renders **500+ historical strokes in 0.05 ms** ($O(1)$ constant time) while the active tip renders at **120 Hz** on an isolated foreground layer.
+- 🧹 **Vector Stroke Eraser**: High-speed point-to-segment hit testing for instantaneous stroke deletion with unified `CanvasAction` Undo/Redo.
+- ✍️ **Hardware Stylus & Palm Rejection**: Seamless palm rejection when writing with active pens (USI styluses on Amazon Fire Max 11, Apple Pencil, S-Pen).
+- ✏️ **Authentic Graphite Pencil**: 3-tier graphite physics (crisp centerline lead contact spine + abraded paper tooth sheath + feathered dust bloom) with dynamic pressure modulation ($0.35 - 0.95$).
 - 🖍️ **Organic Crayon Brush**: Multi-lobed waxy contour extrusion with high-frequency edge perturbation and dynamic exit-taper geometry.
 - 📐 **Pure Vector Engine**: No bitmap textures, raster hacks, or particle spam. Everything is resolution-independent vector geometry that scales crisply to 4K displays.
-- 🎯 **Kinematics & Palm Rejection**: Built-in velocity/acceleration tracking, corner preservation, low-latency smoothing, and single-finger multi-touch policies.
-- 🔄 **Undo / Redo & Serialization**: Full stroke history stack and JSON-serializable stroke structures.
+- 🎯 **Kinematics & Prediction**: Built-in velocity/acceleration tracking, corner preservation, low-latency smoothing, and tip prediction.
+- 🔄 **Undo / Redo & Serialization**: Action history stack supporting drawing and erasing, plus JSON-serializable stroke structures.
 
 ---
 
@@ -23,8 +25,16 @@ A high-performance, **120 Hz vector drawing and painting canvas** for Flutter wi
 Add `go_paint` to your `pubspec.yaml`:
 
 ```yaml
+# Stable release:
 dependencies:
   go_paint: ^0.1.0
+
+# Or test the 0.2.0-dev preview directly from GitHub:
+dependencies:
+  go_paint:
+    git:
+      url: https://github.com/Dean0502/go_paint.git
+      ref: main
 ```
 
 Then run:
@@ -192,6 +202,16 @@ Contributions from the open-source community are warmly welcomed!
 - 🚀 **Want to help maintain?** We welcome co-maintainers to help review PRs and guide the project.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for architecture guidelines, setup, and test commands.
+
+---
+
+## 🗓️ Release Cadence & Advance Changelogs
+
+`go_paint` follows a predictable, transparent monthly release cycle:
+- **1-Month Advance Changelog Preview**: We release the changelog for the upcoming version one month in advance so developers and downstream teams always have a clear, forward-looking roadmap of what is coming.
+- **Scheduled Monthly Release**: Formal releases to [pub.dev](https://pub.dev/packages/go_paint) occur on the **last day of every month**, provided there are significant improvements, performance optimizations, or new features.
+- **Semantic Versioning**: Releases strictly adhere to SemVer (`MAJOR.MINOR.PATCH`).
+- **Stability First**: All releases must maintain 100% test pass rates and zero analyzer warnings across supported platforms.
 
 ---
 

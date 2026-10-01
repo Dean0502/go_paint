@@ -33,8 +33,23 @@ class OutlineInkRenderer implements StrokeRenderer {
   void render(Canvas canvas, Stroke stroke) {
     if (stroke.points.isEmpty) return;
 
+    // Fast path for finalized strokes without diagnostics
+    final hasDiagnostics = showOutline || showCenterline || showBoundaries;
+    if (!hasDiagnostics && fillOutline && stroke.isComplete && stroke.cachedPath != null) {
+      final fillPaint = Paint()
+        ..color = stroke.color
+        ..style = PaintingStyle.fill
+        ..isAntiAlias = true;
+      canvas.drawPath(stroke.cachedPath!, fillPaint);
+      return;
+    }
+
     final outline = geometryBuilder.build(stroke);
     if (outline.isEmpty) return;
+
+    if (stroke.isComplete && stroke.cachedPath == null) {
+      stroke.cachedPath = outline.path;
+    }
 
     // 1. Fill outline
     if (fillOutline) {

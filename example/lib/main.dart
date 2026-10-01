@@ -118,7 +118,7 @@ class _KidzCanvasBenchmarkAppState extends State<KidzCanvasBenchmarkApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'kidz_canvas Benchmark & Geometry Debugger',
+      title: 'GO Engine Benchmark & Geometry Debugger',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
         useMaterial3: true,
@@ -363,7 +363,7 @@ class _BenchmarkScreenState extends State<BenchmarkScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('kidz_canvas v0.3 Benchmark',
+            const Text('GO Engine (go_paint) Benchmark',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             Text(
               '${_platformMeta.device} • ${_platformMeta.platform.toUpperCase()}',

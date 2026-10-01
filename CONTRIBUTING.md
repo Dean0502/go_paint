@@ -58,6 +58,17 @@ This project was created as a high-performance, 120 Hz vector drawing and painti
 
 ---
 
+## 🗓️ Release Cadence & Advance Changelogs
+
+We adhere to a regular, predictable release schedule:
+- **1-Month Advance Changelog Preview**: We publish the changelog for the upcoming release one month prior so contributors, developers, and apps using `go_paint` have full visibility into upcoming features and improvements.
+- **Monthly Cadence**: Releases to [pub.dev](https://pub.dev/packages/go_paint) occur on the **last day of each month**, provided significant improvements, brush additions, or performance optimizations have been merged and validated.
+- **Pull Request Cutoff**: Non-critical features and PRs intended for the upcoming monthly release should be submitted and reviewed prior to the final week of the month to allow thorough regression testing.
+- **Hotfixes**: Critical bug fixes (e.g. crashes or severe gesture stalls) are released immediately out-of-band as patch versions.
+
+---
+
 ## 🤝 Community Maintenance
 
 This is an open, community-driven project with zero corporate bureaucracy. If you are passionate about digital painting, vector geometry, or creative tools in Flutter and want to become a co-maintainer, please open an issue or reach out!
+

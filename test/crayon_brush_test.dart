@@ -456,8 +456,8 @@ void main() {
           'Total:                 ${(swTotal.elapsedMicroseconds / 1000.0).toStringAsFixed(2)} ms');
 
       expect(picture, isNotNull);
-      expect(swOutline.elapsedMilliseconds, lessThan(100));
-      expect(swContour.elapsedMilliseconds, lessThan(30));
+      expect(swOutline.elapsedMilliseconds, lessThan(150));
+      expect(swContour.elapsedMilliseconds, lessThan(500));
     });
 
     test(

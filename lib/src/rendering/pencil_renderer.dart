@@ -215,7 +215,7 @@ class PencilRenderer implements StrokeRenderer {
 
   @override
   void render(Canvas canvas, Stroke stroke) {
-    if (stroke.points.isEmpty) return;
+    if (stroke.points.isEmpty || stroke.baseWidth <= 0.0) return;
 
     final effectiveOpacity = computeOpacity(stroke);
 
@@ -249,24 +249,53 @@ class PencilRenderer implements StrokeRenderer {
       visualPath = _cache.updateActiveStroke(stroke);
     }
 
-    // 2. Soft graphite undertone (ensures firm pressure darkens into the valleys)
-    if (config.underwashAlphaRatio > 0.0) {
-      final underAlpha =
-          (effectiveOpacity * config.underwashAlphaRatio).clamp(0.0, 1.0);
-      final underPaint = Paint()
-        ..color = stroke.color.withValues(alpha: underAlpha)
-        ..style = PaintingStyle.fill
-        ..isAntiAlias = true;
-      canvas.drawPath(visualPath, underPaint);
+    // 1. Pass 1: Abraded Graphite Sheath (Paper Tooth Texture)
+    // Fills visualPath with paper grain texture without hard perimeter borders or flat underwash
+    final pts = stroke.points;
+    double sumP = 0.0;
+    for (final p in pts) {
+      sumP += p.pressure;
     }
+    final avgP = (sumP / pts.length).clamp(0.0, 1.0);
 
-    // 3. Pass 1: Soft Graphite Halo / Lead Dust Bloom
+    final sheathAlpha =
+        (effectiveOpacity * (0.60 + 0.40 * avgP)).clamp(0.0, 1.0);
+    final sheathPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..isAntiAlias = true;
+
+    if (config.enablePaperTooth) {
+      sheathPaint
+        ..shader = PaperGrainTexture.instance.shader
+        ..colorFilter = ColorFilter.mode(
+          stroke.color.withValues(alpha: sheathAlpha),
+          BlendMode.srcIn,
+        );
+    } else {
+      sheathPaint.color = stroke.color.withValues(alpha: sheathAlpha);
+    }
+    canvas.drawPath(visualPath, sheathPaint);
+
+    // Build smooth centerline path for core spine & halo
+    final centerPath = Path();
+    centerPath.moveTo(pts.first.position.dx, pts.first.position.dy);
+    for (int i = 1; i < pts.length; i++) {
+      final p0 = pts[i - 1].position;
+      final p1 = pts[i].position;
+      final mid = Offset((p0.dx + p1.dx) * 0.5, (p0.dy + p1.dy) * 0.5);
+      centerPath.quadraticBezierTo(p0.dx, p0.dy, mid.dx, mid.dy);
+    }
+    centerPath.lineTo(pts.last.position.dx, pts.last.position.dy);
+
+    // 2. Pass 2: Soft Graphite Halo / Dust Bloom along the centerline
     if (config.enableGraphiteHalo && config.graphiteHaloWidth > 0.0) {
-      final haloAlpha =
-          (effectiveOpacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
+      final haloAlpha = (effectiveOpacity *
+              config.graphiteHaloAlphaRatio *
+              (0.45 + 0.55 * avgP))
+          .clamp(0.0, 1.0);
       final haloPaint = Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = config.graphiteHaloWidth
+        ..strokeWidth = (stroke.baseWidth * 1.25).clamp(0.0, 12.0)
         ..strokeCap = StrokeCap.round
         ..strokeJoin = StrokeJoin.round
         ..isAntiAlias = true;
@@ -281,25 +310,22 @@ class PencilRenderer implements StrokeRenderer {
       } else {
         haloPaint.color = stroke.color.withValues(alpha: haloAlpha);
       }
-      canvas.drawPath(visualPath, haloPaint);
+      canvas.drawPath(centerPath, haloPaint);
     }
 
-    // 4. Pass 2: Dense Core Graphite Track with Paper Tooth Texture Shader
+    // 3. Pass 3: Dense Core Graphite Spine (Center contact point of the lead)
+    final coreWidth =
+        (stroke.baseWidth * (0.45 + 0.35 * avgP)).clamp(0.0, stroke.baseWidth);
+    final coreAlpha =
+        (effectiveOpacity * (0.35 + 0.55 * avgP)).clamp(0.0, 0.95);
     final corePaint = Paint()
-      ..style = PaintingStyle.fill
-      ..isAntiAlias = true;
-
-    if (config.enablePaperTooth) {
-      corePaint
-        ..shader = PaperGrainTexture.instance.shader
-        ..colorFilter = ColorFilter.mode(
-          stroke.color.withValues(alpha: effectiveOpacity),
-          BlendMode.srcIn,
-        );
-    } else {
-      corePaint.color = stroke.color.withValues(alpha: effectiveOpacity);
-    }
-    canvas.drawPath(visualPath, corePaint);
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = coreWidth
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..isAntiAlias = true
+      ..color = stroke.color.withValues(alpha: coreAlpha);
+    canvas.drawPath(centerPath, corePaint);
 
     swDraw.stop();
     _cache.recordDrawSubmissionTime(swDraw.elapsedMicroseconds / 1000.0);
@@ -314,23 +340,12 @@ class PencilRenderer implements StrokeRenderer {
     ).first;
     if (radius <= 0.0) return;
 
-    // Soft undertone for dot
-    if (config.underwashAlphaRatio > 0.0) {
-      final underAlpha = (opacity * config.underwashAlphaRatio).clamp(0.0, 1.0);
-      final underPaint = Paint()
-        ..color = stroke.color.withValues(alpha: underAlpha)
-        ..style = PaintingStyle.fill
-        ..isAntiAlias = true;
-      canvas.drawCircle(point.position, radius, underPaint);
-    }
-
-    // Halo bloom for dot
+    // Soft halo bloom for dot
     if (config.enableGraphiteHalo && config.graphiteHaloWidth > 0.0) {
       final haloAlpha =
           (opacity * config.graphiteHaloAlphaRatio).clamp(0.0, 1.0);
       final haloPaint = Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = config.graphiteHaloWidth
+        ..style = PaintingStyle.fill
         ..isAntiAlias = true;
 
       if (config.enablePaperTooth) {
@@ -343,25 +358,14 @@ class PencilRenderer implements StrokeRenderer {
       } else {
         haloPaint.color = stroke.color.withValues(alpha: haloAlpha);
       }
-      canvas.drawCircle(
-          point.position, radius + config.graphiteHaloWidth * 0.5, haloPaint);
+      canvas.drawCircle(point.position, radius * 1.3, haloPaint);
     }
 
-    // Core lead dot with paper tooth
+    // Core lead dot with crisp center point
     final corePaint = Paint()
       ..style = PaintingStyle.fill
-      ..isAntiAlias = true;
-
-    if (config.enablePaperTooth) {
-      corePaint
-        ..shader = PaperGrainTexture.instance.shader
-        ..colorFilter = ColorFilter.mode(
-          stroke.color.withValues(alpha: opacity),
-          BlendMode.srcIn,
-        );
-    } else {
-      corePaint.color = stroke.color.withValues(alpha: opacity);
-    }
-    canvas.drawCircle(point.position, radius, corePaint);
+      ..isAntiAlias = true
+      ..color = stroke.color.withValues(alpha: opacity);
+    canvas.drawCircle(point.position, radius * 0.7, corePaint);
   }
 }

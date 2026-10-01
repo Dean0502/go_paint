@@ -9,6 +9,7 @@ class Stroke {
   final double baseWidth;
   final bool isComplete;
   final Rect bounds;
+  Path? cachedPath;
 
   Stroke({
     required this.id,
@@ -17,6 +18,7 @@ class Stroke {
     this.baseWidth = 4.0,
     this.isComplete = false,
     Rect? bounds,
+    this.cachedPath,
   }) : bounds = bounds ?? _computeBounds(points, baseWidth);
 
   static Rect _computeBounds(List<StrokePoint> points, double width) {
@@ -51,6 +53,7 @@ class Stroke {
     double? baseWidth,
     bool? isComplete,
     Rect? bounds,
+    Path? cachedPath,
   }) {
     final newPoints = points ?? this.points;
     final newWidth = baseWidth ?? this.baseWidth;
@@ -61,6 +64,7 @@ class Stroke {
       baseWidth: newWidth,
       isComplete: isComplete ?? this.isComplete,
       bounds: bounds ?? _computeBounds(newPoints, newWidth),
+      cachedPath: cachedPath ?? this.cachedPath,
     );
   }
 }
