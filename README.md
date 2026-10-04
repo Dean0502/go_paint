@@ -1,9 +1,12 @@
 # go_paint (GO Engine) 🎨
 
 [![pub package](https://img.shields.io/pub/v/go_paint.svg)](https://pub.dev/packages/go_paint)
+[![Live Web Demo](https://img.shields.io/badge/demo-Live%20Web%20App-brightgreen.svg)](https://dean0502.github.io/go_paint/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Powered by the **GO Engine** — a high-performance, **120 Hz vector drawing, inking, and note-taking engine** for Flutter with dual-layer compositing, interactive vector stroke eraser, authentic crayon & pencil brushes, sub-millisecond incremental rendering, and advanced stylus palm rejection. Engineered for low-latency handwriting and scalable digital notebooks.
+
+🎮 **[Try the Live Web Demo](https://dean0502.github.io/go_paint/)** — Test the 120 Hz vector inking, realistic graphite pencil, waxy crayon, and vector eraser right in your browser!
 
 ---
 
